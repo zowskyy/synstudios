@@ -33,24 +33,24 @@
 
 ---
 
-## Phase 3 — Streamed glTF trial (next)
+## Phase 3 — Done (streamed glTF trial)
 
 **Goal:** Real 3D meshes with strict budgets.
 
-| Rule | Limit |
-|------|-------|
-| Max file size | 12 MB glTF/GLB |
-| Max texture edge | 2048 px (auto-downscale) |
-| Max meshes per scene | 8 |
-| Draco/meshopt compression | Required for &gt;4 MB |
+| Rule | Limit | Status |
+|------|-------|--------|
+| Max file size | 12 MB glTF/GLB | ✅ `gltf-budget.ts` + `gltf-loader.ts` |
+| Max texture edge | 2048 px (auto-downscale) | ✅ `gltf-textures.ts` |
+| Max meshes per scene | 8 | ✅ header validation |
+| Draco/meshopt compression | Required for &gt;4 MB | ✅ `gltf-proxy.ts` extension scan |
 
-**Tech:** `@react-three/drei` `useGLTF` with `draco` decoder; dispose on scene change; `renderer.dispose()`.
+**Tech:** `@react-three/drei` `useGLTF` + `DRACOLoader` (CDN WASM on demand); dispose on scene/url change.
 
-**Not in APK:** Decoder WASM loaded on demand from CDN or chunked in `out/`.
+**Taylor:** W12 StreamGltf validates this phase.
 
 ---
 
-## Phase 4 — Project folder link (SAF / File System Access)
+## Phase 4 — Project folder link (next)
 
 **Goal:** “Open project folder” instead of importing everything.
 
@@ -98,7 +98,7 @@ Relay: `manifest/frontier_relay.json` — see `scripts/frontier_relay.py append`
 | Asset type | Max file | Max decoded |
 |------------|----------|-------------|
 | Sprite sheet | 8 MB | 16 MP |
-| glTF (future) | 12 MB | 2048² textures |
+| glTF trial | 12 MB | 2048² textures |
 | Cached blobs | 3 entries LRU | — |
 | APK static `out/` | 50 MB (W5) | — |
 
@@ -120,6 +120,6 @@ Relay: `manifest/frontier_relay.json` — see `scripts/frontier_relay.py append`
 | W5 BundleSizer | APK / `out/` size cap |
 | W10 AssetRoadmap | Roadmap doc + budget modules present |
 | W11 ProxyPreview | Phase 2 thumbnail + sidecar + glTF header validation |
-| W12 StreamGltf | (Phase 3) glTF budget enforcement |
+| W12 StreamGltf | Phase 3 glTF budget + streamed preview |
 
 Run: `python3 scripts/taylor_asset_team.py`

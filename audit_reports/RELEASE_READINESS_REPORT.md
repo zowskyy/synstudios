@@ -2,7 +2,7 @@
 
 **Verdict:** RELEASE_READY
 **Version:** 1.0.0-rc.1
-**Audited:** 2026-08-08T18:17:29.970198Z
+**Audited:** 2026-08-08T18:31:57.263970Z
 
 ## Checks
 

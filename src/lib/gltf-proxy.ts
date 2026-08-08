@@ -7,6 +7,8 @@ export type GltfProxyInfo = {
   nodeCount: number;
   boneHint: number;
   bounds: [number, number, number];
+  usesDraco: boolean;
+  usesMeshopt: boolean;
 };
 
 export async function parseGltfProxy(file: File): Promise<GltfProxyInfo | null> {
@@ -30,7 +32,13 @@ export async function parseGltfProxy(file: File): Promise<GltfProxyInfo | null> 
     const doc = JSON.parse(text) as {
       meshes?: unknown[];
       nodes?: { name?: string }[];
+      extensionsUsed?: string[];
+      extensionsRequired?: string[];
     };
+    const extensions = new Set([
+      ...(doc.extensionsUsed ?? []),
+      ...(doc.extensionsRequired ?? []),
+    ]);
     const meshCount = doc.meshes?.length ?? 0;
     const nodeCount = doc.nodes?.length ?? 0;
     const boneHint = doc.nodes?.filter((n) =>
@@ -42,6 +50,8 @@ export async function parseGltfProxy(file: File): Promise<GltfProxyInfo | null> 
       nodeCount,
       boneHint,
       bounds: [size, size * 1.8, size * 0.5],
+      usesDraco: extensions.has("KHR_draco_mesh_compression"),
+      usesMeshopt: extensions.has("EXT_meshopt_compression"),
     };
   } catch {
     return null;

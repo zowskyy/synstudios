@@ -2,8 +2,9 @@
 
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
-import type { Group } from "three";
+import { Suspense, useEffect, useRef } from "react";
+import type { Group, WebGLRenderer } from "three";
+import { UserGltfModel } from "@/components/studio/UserGltfModel";
 import {
   DEFAULT_SCENE_TUNING,
   animTimeSeconds,
@@ -107,6 +108,7 @@ type ScenePreview3DProps = {
   playing: boolean;
   elapsedMs: number;
   tuning?: SceneTuning;
+  gltfUrl?: string;
   className?: string;
 };
 
@@ -114,20 +116,34 @@ export function ScenePreview3D({
   playing,
   elapsedMs,
   tuning = DEFAULT_SCENE_TUNING,
+  gltfUrl,
   className,
 }: ScenePreview3DProps) {
   const camPos = cameraPositionForPreset(tuning.cameraPreset);
   const keyLight = tuning.exposureMode === "fixed" ? 1.35 : 1.1;
   const ambient = tuning.ambientIntensity;
+  const rendererRef = useRef<WebGLRenderer | null>(null);
+
+  useEffect(() => {
+    return () => {
+      rendererRef.current?.dispose();
+      rendererRef.current = null;
+    };
+  }, [gltfUrl]);
 
   return (
     <div className={className}>
       <div
         className="relative h-[280px] w-full overflow-hidden rounded-md border border-border bg-black"
         role="img"
-        aria-label="3D rig preview canvas"
+        aria-label={gltfUrl ? "3D glTF trial preview canvas" : "3D rig preview canvas"}
       >
-        <Canvas gl={{ antialias: true, alpha: false }}>
+        <Canvas
+          gl={{ antialias: true, alpha: false }}
+          onCreated={({ gl }) => {
+            rendererRef.current = gl;
+          }}
+        >
           <color attach="background" args={["#000000"]} />
           <PerspectiveCamera makeDefault position={camPos} fov={tuning.fov} />
           <ambientLight intensity={ambient} />
@@ -135,12 +151,30 @@ export function ScenePreview3D({
           {tuning.viewportMode === "lit" ? (
             <directionalLight position={[-3, 2, -2]} intensity={0.25} color="#aaaaaa" />
           ) : null}
-          <AnimatedRig playing={playing} elapsedMs={elapsedMs} tuning={tuning} />
+          {gltfUrl ? (
+            <Suspense
+              fallback={
+                <mesh>
+                  <boxGeometry args={[0.3, 0.3, 0.3]} />
+                  <meshBasicMaterial color="#333333" wireframe />
+                </mesh>
+              }
+            >
+              <UserGltfModel
+                url={gltfUrl}
+                playing={playing}
+                elapsedMs={elapsedMs}
+                tuning={tuning}
+              />
+            </Suspense>
+          ) : (
+            <AnimatedRig playing={playing} elapsedMs={elapsedMs} tuning={tuning} />
+          )}
           <OrbitControls
             enablePan={false}
             minDistance={tuning.orbitMin}
             maxDistance={tuning.orbitMax}
-            autoRotate={tuning.autoRotate}
+            autoRotate={tuning.autoRotate && !gltfUrl}
             autoRotateSpeed={0.8}
           />
           {tuning.showGrid ? (
@@ -150,8 +184,8 @@ export function ScenePreview3D({
         <ViewportOverlays tuning={tuning} />
       </div>
       <p className="mt-2 text-center text-xs text-muted-foreground">
-        {tuning.viewportMode} · {tuning.cameraPreset} · {tuning.playbackRate}× · fov{" "}
-        {tuning.fov}°
+        {gltfUrl ? "user glTF" : "procedural rig"} · {tuning.viewportMode} · {tuning.cameraPreset} ·{" "}
+        {tuning.playbackRate}× · fov {tuning.fov}°
         {tuning.showThirds ? " · ⅓" : ""}
         {tuning.showSafeArea ? " · safe" : ""}
       </p>
