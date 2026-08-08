@@ -6,28 +6,52 @@
   "ga_ready": true,
   "blockers": [],
   "rc_blockers": [],
-  "audited_at": "2026-08-08T18:45:10.638350Z",
+  "audited_at": "2026-08-08T23:43:06.709467Z",
   "checks": [
     {
       "name": "wave_0_tracking_gate",
       "pass": true,
-      "skipped": true,
-      "output": "{\"all_pass\": true, \"max_phase\": 8, \"phase_0_pass\": true, \"phase_1_pass\": true, \"phase_2_pass\": true, \"phase_3_pass\": true, \"phase_4_pass\": true, \"phase_5_pass\": true, \"phase_6_pass\": true, \"phase_7_pass\": true, \"phase_8_pass\": true, \"checks\": {\"0.1_workers\": {\"pass\": true, \"exit_code\": 0, \"output\": \"feature parity verified\\n[PASS] scripts/workers/w5_android_validate.py: PASS: export size 3.12MB, A"
+      "exit_code": 0,
+      "output": "{\n  \"all_pass\": true,\n  \"max_phase\": 8,\n  \"phase_0_pass\": true,\n  \"phase_1_pass\": true,\n  \"phase_2_pass\": true,\n  \"phase_3_pass\": true,\n  \"phase_4_pass\": true,\n  \"phase_5_pass\": true,\n  \"phase_6_pass\": true,\n  \"phase_7_pass\": true,\n  \"phase_8_pass\": true,\n  \"audited_at\": \"2026-08-08T23:43:02.665278+00:00\"\n}\n  [PASS] 0.1_workers\n  [PASS] 0.2_tracking_manifest\n  [PASS] 0.3_frontier_relay\n  [PASS] 1.1_sprite_tuning\n  [PASS] 1.2_tuning_panel\n  [PASS] 1.3_onion_skin\n  [PASS] 2.1_spec_parity\n  [PASS] 2.2_trial_player\n  [PASS] 2.3_unreal_viewport\n  [PASS] 3.1_android\n  [PASS] 3.2_capacitor\n  [PASS] 4.1_benchmark\n  [PASS] 4.2_downloads_save\n  [PASS] 5.1_policy\n  [PASS] 5.2_launch\n  [PASS] 6.1_release_ops\n  [PASS] 6.2_web_build\n  [PASS] 7.1_independent\n  [PASS] 8.1_relay_script\n",
+      "command": "/usr/bin/python3 scripts/tracking.py gate"
     },
     {
       "name": "wave_0_independent_validate",
       "pass": true,
-      "skipped": true
+      "exit_code": 0,
+      "output": "orkers/w10_asset_roadmap.py: PASS: asset import roadmap + lightweight loader verified\n[PASS] scripts/workers/w11_proxy_preview.py: PASS: Phase 2 proxy preview (strip + sidecar + glTF header) verified\n[PASS] scripts/workers/w12_stream_gltf.py: PASS: Phase 3 streamed glTF trial + budget enforcement verified\n[PASS] scripts/workers/w13_project_folder.py: PASS: Phase 4 project folder link + lazy clip load verified\n[PASS] scripts/workers/w14_cloud_transcode.py: PASS: Phase 5 cloud transcode lane + offline fallback verified\n[PASS] scripts/workers/w15_frontier_bridge.py: PASS: Phase 6 Frontier Syntax trial pack bridge verified\n[PASS] scripts/workers/w16_benchmark_baseline.py: PASS: benchmark baseline manifest + regression compare verified\nPASS: independent validation \u2014 all Taylor workers verified\n",
+      "command": "/usr/bin/python3 scripts/independent_validate.py"
+    },
+    {
+      "name": "wave_0_taylor_playstore",
+      "pass": true,
+      "exit_code": 0,
+      "output": "Taylor Play Store team: PASS\nReport: /workspace/audit_reports/taylor_playstore_report.md\n",
+      "command": "/usr/bin/python3 scripts/taylor_playstore_team.py --mode production"
+    },
+    {
+      "name": "wave_1_sprite_studio",
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: Aseprite-style 2D sprite studio parity verified\n",
+      "command": "/usr/bin/python3 scripts/workers/w8_sprite_studio.py"
+    },
+    {
+      "name": "wave_1_unreal_viewport",
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: Unreal Engine viewport tuning parity verified\n",
+      "command": "/usr/bin/python3 scripts/workers/w9_unreal_viewport.py"
     },
     {
       "name": "wave_2_android_debug_workflow",
       "pass": true,
-      "skipped": true
+      "skipped": false
     },
     {
       "name": "wave_3_frontier_relay",
       "pass": true,
-      "skipped": true
+      "skipped": false
     }
   ],
   "manifest": "manifest/release_readiness.json",

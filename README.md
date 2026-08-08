@@ -37,6 +37,8 @@ Seven-worker pipeline (adapted from Taylor Ops Team):
 | W5 BundleSizer | Export size + Android config |
 | W6 ReleaseOps | Signing + version manifest |
 | W7 LaunchContinuity | Store listing docs |
+| W8 SpriteStudio | 2D loop/onion-skin parity |
+| W9 UnrealViewport | 3D viewport map parity |
 
 ```powershell
 npm install
@@ -44,6 +46,8 @@ python scripts/taylor_playstore_team.py --mode production
 ```
 
 ### Build release AAB
+
+**Windows (PowerShell):**
 
 ```powershell
 # One-time: create signing keystore
@@ -54,7 +58,14 @@ copy android\keystore.properties.example android\keystore.properties
 npm run android:release
 ```
 
-Upload `android/app/build/outputs/bundle/release/app-release.aab` to Google Play Console.
+**Linux / macOS:**
+
+```bash
+npm run android:release:linux
+npm run package:releases   # copy APK + AAB into dist/
+```
+
+Upload `dist/synstudios-release.aab` (or `android/app/build/outputs/bundle/release/app-release.aab`) to Google Play Console.
 
 See **`store/SUBMISSION_CHECKLIST.md`** for full Play Store submission steps.
 

@@ -44,8 +44,11 @@ if ($LASTEXITCODE -ne 0) { throw "Gradle bundleRelease failed" }
 
 $aab = Join-Path $Root "android\app\build\outputs\bundle\release\app-release.aab"
 if (Test-Path $aab) {
+  $dest = Join-Path $Root "dist\synstudios-release.aab"
+  New-Item -ItemType Directory -Path (Split-Path $dest) -Force | Out-Null
+  Copy-Item $aab $dest -Force
   Write-Host ""
-  Write-Host "PASS: AAB ready at $aab"
+  Write-Host "PASS: AAB ready at $dest"
 } else {
   throw "AAB not found at expected path"
 }

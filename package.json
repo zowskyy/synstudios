@@ -18,6 +18,8 @@
     "android:debug": "powershell -ExecutionPolicy Bypass -File scripts/build-debug-apk.ps1",
     "android:debug:linux": "bash scripts/build-debug-apk.sh",
     "android:release": "powershell -ExecutionPolicy Bypass -File scripts/build-release-aab.ps1",
+    "android:release:linux": "bash scripts/build-release-aab.sh",
+    "package:releases": "bash scripts/package-releases.sh",
     "benchmark:compare": "python scripts/benchmark-compare.py",
     "benchmark:baseline": "python3 scripts/benchmark-compare.py --against-baseline",
     "benchmark:baselines": "python3 scripts/benchmark-compare.py --list-baselines",

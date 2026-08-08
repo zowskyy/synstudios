@@ -1,0 +1,98 @@
+name: SynStudios Windows Android Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "android/**"
+      - "capacitor.config.ts"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/build-debug-apk.ps1"
+      - "scripts/build-release-aab.ps1"
+      - ".github/workflows/android-windows-release.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows-android:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Taylor Play Store audit
+        run: python scripts/taylor_playstore_team.py --mode production
+
+      - name: Build debug APK (Windows)
+        shell: pwsh
+        run: ./scripts/build-debug-apk.ps1
+
+      - name: Build release AAB (Windows, unsigned validation)
+        shell: pwsh
+        run: ./scripts/build-release-aab.ps1 -SkipBuild
+
+      - name: Package release artifacts
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/synstudios-debug.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab dist/synstudios-release.aab
+
+      - name: Read version
+        id: version
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=windows-v${VERSION}-${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: SynStudios Windows Build v${{ steps.version.outputs.version }} (build ${{ github.run_number }})
+          body: |
+            ## SynStudios Android packages (built on Windows)
+
+            Built from commit `${{ github.sha }}` on `${{ github.ref_name }}`.
+
+            ### Artifacts
+            - `synstudios-debug.apk` — install with `adb install -r synstudios-debug.apk`
+            - `synstudios-release.aab` — unsigned validation bundle for Play Store pipeline
+
+            ### Taylor audit
+            Production Taylor workers passed before packaging.
+          files: |
+            dist/synstudios-debug.apk
+            dist/synstudios-release.aab
+          draft: false
+          prerelease: true
+          generate_release_notes: true

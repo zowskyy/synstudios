@@ -73,6 +73,20 @@ WORKERS: dict[str, dict[str, Any]] = {
         "commands": [[PYTHON, "scripts/workers/w5_android_validate.py"]],
         "allow_nonzero": True,
     },
+    "W8_SpriteStudio": {
+        "group": 2,
+        "name": "SpriteStudio",
+        "role": "2D sprite studio parity (loop, onion skin, sheet layout)",
+        "commands": [[PYTHON, "scripts/workers/w8_sprite_studio.py"]],
+        "allow_nonzero": False,
+    },
+    "W9_UnrealViewport": {
+        "group": 2,
+        "name": "UnrealViewport",
+        "role": "Unreal viewport map + 3D scene parity",
+        "commands": [[PYTHON, "scripts/workers/w9_unreal_viewport.py"]],
+        "allow_nonzero": False,
+    },
     "W6_ReleaseOps": {
         "group": 3,
         "name": "ReleaseOps",
