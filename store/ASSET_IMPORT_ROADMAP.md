@@ -19,26 +19,21 @@
 
 ---
 
-## Phase 2 — Proxy preview (next, low memory)
+## Phase 2 — Done (proxy preview)
 
 **Goal:** User points at a heavy source file; app never loads the full asset.
 
-| Approach | Memory impact | UX |
-|----------|---------------|-----|
-| **2D thumbnail strip** — auto-generate 8-frame × 128px preview on pick | ~1–2 MB | “Looks like my walk cycle” |
-| **3D proxy mesh** — load only bounding box + bone count from glTF header | &lt;100 KB | Silhouette + timing |
-| **Sidecar JSON** — user exports `trial.json` from Godot/UE plugin (paths + fps only) | &lt;50 KB | Exact timing, placeholder art |
+| Approach | Status |
+|----------|--------|
+| **2D thumbnail strip** — auto-generate 8-frame × 128px preview on pick | ✅ `sprite-proxy-worker.ts` + `asset-loader.ts` |
+| **3D proxy mesh** — load only bounding box + bone count from glTF header | ✅ `gltf-proxy.ts` + `GltfProxyPanel` |
+| **Sidecar JSON** — `trial.json` from Godot/UE (`store/EXPORT_TEMPLATES.md`) | ✅ `trial-sidecar.ts` + `TrialSidecarImport` |
 
-**Implementation sketch:**
-- `scripts/workers/` Godot/UE export template docs in `store/EXPORT_TEMPLATES.md`
-- Web Worker decodes images off main thread
-- `createImageBitmap` + canvas downscale before preview
-
-**Taylor:** W11 ProxyPreview (future worker)
+**Taylor:** W11 ProxyPreview validates this phase.
 
 ---
 
-## Phase 3 — Streamed glTF trial (medium)
+## Phase 3 — Streamed glTF trial (next)
 
 **Goal:** Real 3D meshes with strict budgets.
 
@@ -124,7 +119,7 @@ Relay: `manifest/frontier_relay.json` — see `scripts/frontier_relay.py append`
 |--------|------|
 | W5 BundleSizer | APK / `out/` size cap |
 | W10 AssetRoadmap | Roadmap doc + budget modules present |
-| W11 ProxyPreview | (Phase 2) thumbnail + sidecar validation |
+| W11 ProxyPreview | Phase 2 thumbnail + sidecar + glTF header validation |
 | W12 StreamGltf | (Phase 3) glTF budget enforcement |
 
 Run: `python3 scripts/taylor_asset_team.py`

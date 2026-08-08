@@ -23,6 +23,7 @@ import {
 type SceneTuningPanelProps = {
   tuning: SceneTuning;
   onChange: (next: SceneTuning) => void;
+  gltfProxyFooter?: React.ReactNode;
 };
 
 function PresetRow({
@@ -69,7 +70,7 @@ function PresetRow({
   );
 }
 
-export function SceneTuningPanel({ tuning, onChange }: SceneTuningPanelProps) {
+export function SceneTuningPanel({ tuning, onChange, gltfProxyFooter }: SceneTuningPanelProps) {
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -154,6 +155,7 @@ export function SceneTuningPanel({ tuning, onChange }: SceneTuningPanelProps) {
             Orbit
           </Button>
         </div>
+        {gltfProxyFooter}
       </CardContent>
     </Card>
   );

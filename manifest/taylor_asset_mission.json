@@ -1,6 +1,6 @@
 {
   "mission": "taylor_asset_team",
-  "audited_at": "2026-08-08T18:05:28.371152+00:00",
+  "audited_at": "2026-08-08T18:17:33.511997+00:00",
   "all_pass": true,
   "workers": [
     {
@@ -13,7 +13,14 @@
     {
       "pass": true,
       "exit_code": 0,
-      "output": "PASS: export size 1.76MB, Android config valid",
+      "output": "PASS: Phase 2 proxy preview (strip + sidecar + glTF header) verified",
+      "command": "/usr/bin/python3 scripts/workers/w11_proxy_preview.py",
+      "worker": "W11_ProxyPreview"
+    },
+    {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: export size 1.77MB, Android config valid",
       "command": "/usr/bin/python3 scripts/workers/w5_android_validate.py",
       "worker": "W5_BundleSizer"
     },

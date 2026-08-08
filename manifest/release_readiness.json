@@ -6,7 +6,7 @@
   "ga_ready": true,
   "blockers": [],
   "rc_blockers": [],
-  "audited_at": "2026-08-08T17:47:33.316329Z",
+  "audited_at": "2026-08-08T18:17:29.970198Z",
   "checks": [
     {
       "name": "wave_0_tracking_gate",

@@ -13,7 +13,9 @@ import { AssetRoadmapCard } from "@/components/studio/AssetRoadmapCard";
 import { SceneTuningPanel } from "@/components/studio/SceneTuningPanel";
 import { SpritePreview2D } from "@/components/studio/SpritePreview2D";
 import { SpriteTuningPanel } from "@/components/studio/SpriteTuningPanel";
+import { GltfProxyPanel } from "@/components/studio/GltfProxyPanel";
 import { SpriteUpload } from "@/components/studio/SpriteUpload";
+import { TrialSidecarImport } from "@/components/studio/TrialSidecarImport";
 import { TrialControls } from "@/components/studio/TrialControls";
 import { TrialMetricsPanel } from "@/components/studio/TrialMetricsPanel";
 import { useTrialPlayer } from "@/hooks/use-trial-player";
@@ -36,6 +38,8 @@ import {
   applyPreset,
   type SpriteTuning,
 } from "@/lib/sprite-tuning";
+import type { GltfProxyInfo } from "@/lib/gltf-proxy";
+import { sidecarToSpriteConfig, type TrialSidecar } from "@/lib/trial-sidecar";
 import {
   DEMO_SCENES,
   type PreviewMode,
@@ -53,7 +57,12 @@ export function StudioShell() {
   const [restoreCandidate, setRestoreCandidate] = useState<RestoreCandidate | null>(null);
   const [spriteTuning, setSpriteTuning] = useState<SpriteTuning>(DEFAULT_SPRITE_TUNING);
   const [sceneTuning, setSceneTuning] = useState<SceneTuning>(DEFAULT_SCENE_TUNING);
+  const [trialDurationMs, setTrialDurationMs] = useState<number | undefined>();
+  const [sidecarClip, setSidecarClip] = useState<string | null>(null);
+  const [gltfProxyInfo, setGltfProxyInfo] = useState<GltfProxyInfo | null>(null);
   const undoStackRef = useRef<string[]>([]);
+
+  const effectiveDurationMs = trialDurationMs ?? selected.durationMs;
 
   const tunedSprite = selected.sprite
     ? {
@@ -69,7 +78,7 @@ export function StudioShell() {
   const trial = useTrialPlayer({
     mode: viewMode,
     sprite: tunedSprite,
-    durationMs: selected.durationMs,
+    durationMs: effectiveDurationMs,
     sceneId: selected.id,
     onComplete: (metrics) => {
       if (socket?.connected) {
@@ -134,6 +143,9 @@ export function StudioShell() {
   useEffect(() => {
     setViewMode(selected.mode);
     setCustomSheetUrl(undefined);
+    setTrialDurationMs(undefined);
+    setSidecarClip(null);
+    setGltfProxyInfo(null);
     if (selected.sprite) {
       setSpriteTuning(
         applyPreset(DEFAULT_SPRITE_TUNING, {
@@ -342,14 +354,48 @@ export function StudioShell() {
               />
               <SpriteUpload
                 config={tunedSprite ?? selected.sprite}
-                onUpload={(url, fileName) => {
-                  if (customSheetUrl && customSheetUrl !== url) {
+                onUpload={(result) => {
+                  if (customSheetUrl && customSheetUrl !== result.url) {
                     releaseObjectUrl(customSheetUrl);
                   }
-                  setCustomSheetUrl(url);
+                  setCustomSheetUrl(result.url);
+                  if (result.isProxy && result.frameWidth && result.frameHeight) {
+                    setSpriteTuning((prev) =>
+                      applyPreset(prev, {
+                        frameWidth: result.frameWidth,
+                        frameHeight: result.frameHeight,
+                      }),
+                    );
+                  }
                   setDirty(true);
                   persistSnapshot(true);
-                  void fileName;
+                  void result.fileName;
+                }}
+              />
+              <TrialSidecarImport
+                onImport={(sidecar: TrialSidecar) => {
+                  const sprite = sidecarToSpriteConfig(sidecar);
+                  setSpriteTuning((prev) =>
+                    applyPreset(prev, {
+                      frameWidth: sprite.frameWidth,
+                      frameHeight: sprite.frameHeight,
+                      fps: sprite.fps,
+                      loop: sprite.loop,
+                      sheetLayout: sidecar.strip?.layout ?? prev.sheetLayout,
+                    }),
+                  );
+                  setTrialDurationMs(sidecar.durationMs);
+                  setSidecarClip(sidecar.clipName);
+                  if (sidecar.proxyGltf) {
+                    setGltfProxyInfo({
+                      meshCount: sidecar.proxyGltf.meshCount ?? 0,
+                      nodeCount: 0,
+                      boneHint: sidecar.proxyGltf.boneCount ?? 0,
+                      bounds: sidecar.proxyGltf.bounds,
+                    });
+                  }
+                  setDirty(true);
+                  persistSnapshot(true);
                 }}
               />
             </CardContent>
@@ -375,6 +421,9 @@ export function StudioShell() {
                 setSceneTuning(next);
                 setDirty(true);
               }}
+              gltfProxyFooter={
+                <GltfProxyPanel info={gltfProxyInfo} onParsed={setGltfProxyInfo} />
+              }
             />
           ) : null}
         </aside>
@@ -382,7 +431,9 @@ export function StudioShell() {
         <section className="space-y-4">
           <Card className="studio-grid overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm">{selected.title}</CardTitle>
+              <CardTitle className="text-sm">
+                {sidecarClip ?? selected.title}
+              </CardTitle>
               <Tabs
                 value={viewMode}
                 onValueChange={(v) => {

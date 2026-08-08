@@ -8,16 +8,16 @@
       "id": "relay-0001",
       "created_at": "2026-08-08T17:45:00Z",
       "synstudios_feature": "Aseprite-style 2D sprite tuning panel (speed/size/zoom/layout/onion)",
-      "frontier_target": "Sprite sheet import codegen — horizontal/vertical/grid strip layouts",
+      "frontier_target": "Sprite sheet import codegen \u2014 horizontal/vertical/grid strip layouts",
       "insight": "Preset buttons encode frame fps, dimensions, and padding matching Aseprite export; Frontier wasm codegen can emit equivalent strip metadata structs.",
       "frontier_file_hint": "src/wasm_codegen/ or AnimationLoader conventions in Godot bridge"
     },
     {
       "id": "relay-0002",
       "created_at": "2026-08-08T17:45:00Z",
-      "synstudios_feature": "SynStudios tracking.py phases 0–8 + independent_validate.py",
+      "synstudios_feature": "SynStudios tracking.py phases 0\u20138 + independent_validate.py",
       "frontier_target": "scripts/tracking.py gate parity for Play Store / compiler release",
-      "insight": "Taylor worker orchestration pattern (W1–W8) mirrors Frontier's phase gate model; reuse evidence JSON schema in frontier-syntax manifest/tracking_evidence.json.",
+      "insight": "Taylor worker orchestration pattern (W1\u2013W8) mirrors Frontier's phase gate model; reuse evidence JSON schema in frontier-syntax manifest/tracking_evidence.json.",
       "frontier_file_hint": "scripts/tracking.py"
     },
     {
@@ -25,24 +25,32 @@
       "created_at": "2026-08-08T17:45:00Z",
       "synstudios_feature": "Benchmark JSON direct Downloads save on Android",
       "frontier_target": "Native self-host artifact export path",
-      "insight": "MediaStore Downloads write pattern validates on-device telemetry export without share sheet — applicable to Frontier benchmark manifests on Android host.",
+      "insight": "MediaStore Downloads write pattern validates on-device telemetry export without share sheet \u2014 applicable to Frontier benchmark manifests on Android host.",
       "frontier_file_hint": "android/BenchmarkSavePlugin pattern"
     },
     {
       "id": "relay-0004",
       "created_at": "2026-08-08T17:55:00Z",
-      "synstudios_feature": "UE 5.8 viewport tuning — lit/unlit/wire, cine camera, sequencer speed, safe area",
+      "synstudios_feature": "UE 5.8 viewport tuning \u2014 lit/unlit/wire, cine camera, sequencer speed, safe area",
       "frontier_target": "Trial scene viewport metadata codegen + sequencer timing types",
       "insight": "SceneTuning preset patches mirror UE view modes and playback rate; Frontier can serialize equivalent structs for wasm-hosted cinematic trials.",
-      "frontier_file_hint": "docs/UNREAL_VIEWPORT_MAP.md → frontier syntax scene module"
+      "frontier_file_hint": "docs/UNREAL_VIEWPORT_MAP.md \u2192 frontier syntax scene module"
     },
     {
       "id": "relay-0005",
       "created_at": "2026-08-08T18:05:00Z",
-      "synstudios_feature": "Asset import roadmap — proxy preview, streamed glTF, SAF folder link",
+      "synstudios_feature": "Asset import roadmap \u2014 proxy preview, streamed glTF, SAF folder link",
       "frontier_target": "Trial pack schema + wasm-sidecar for animation metadata without mesh embed",
-      "insight": "Phase 2–5 roadmap defines JSON-only trial manifests Frontier can compile; keeps host memory flat while users reference real UE/Godot exports.",
+      "insight": "Phase 2\u20135 roadmap defines JSON-only trial manifests Frontier can compile; keeps host memory flat while users reference real UE/Godot exports.",
       "frontier_file_hint": "store/ASSET_IMPORT_ROADMAP.md Phase 6"
+    },
+    {
+      "id": "relay-0006",
+      "created_at": "2026-08-08T18:17:14.994854Z",
+      "synstudios_feature": "Phase 2 proxy preview \u2014 auto strip, trial.json sidecar, GLB header",
+      "frontier_target": "TrialPack v1 wasm struct + thumbnail codegen",
+      "insight": "Web Worker builds 8-frame proxy; trial.json carries fps/duration without binary embed; GLB header parse for silhouette bounds",
+      "frontier_file_hint": "store/EXPORT_TEMPLATES.md"
     }
   ]
 }

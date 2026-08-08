@@ -25,6 +25,7 @@ WORKERS = [
     "scripts/workers/w8_sprite_studio.py",
     "scripts/workers/w9_unreal_viewport.py",
     "scripts/workers/w10_asset_roadmap.py",
+    "scripts/workers/w11_proxy_preview.py",
 ]
 
 
