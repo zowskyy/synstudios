@@ -70,11 +70,15 @@ export function TrialMetricsPanel({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <Metric label="Avg FPS" value={metrics.avgFps.toFixed(1)} />
-          <Metric label="Min FPS" value={metrics.minFps.toFixed(1)} />
+          <Metric label="Timer RAF avg" value={metrics.avgFps.toFixed(1)} />
+          <Metric label="Timer RAF min" value={metrics.minFps.toFixed(1)} />
           <Metric label="Frame drops" value={String(metrics.frameDrops)} />
           <Metric label="Platform" value={metrics.platform.toUpperCase()} />
         </div>
+        <p className="text-[10px] text-muted-foreground">
+          RAF metrics measure trial timer smoothness (often ~120 on high-refresh phones), not sprite
+          animation FPS.
+        </p>
         {status === "complete" ? (
           <div className="space-y-2">
             <Button

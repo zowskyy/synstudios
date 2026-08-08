@@ -2,6 +2,7 @@
  * Cloud transcode lane — optional accelerator, offline-first (Phase 5).
  */
 
+import { Capacitor } from "@capacitor/core";
 import { generateProxyStrip } from "@/lib/sprite-proxy-worker";
 import {
   createTrialPackExpiry,
@@ -58,6 +59,10 @@ export async function requestCloudTranscode(
 ): Promise<TrialPack> {
   if (!options.optedIn) {
     throw new Error("Cloud transcode requires opt-in");
+  }
+
+  if (typeof window !== "undefined" && Capacitor.isNativePlatform()) {
+    return buildLocalTrialPack(file);
   }
 
   const endpoint = options.endpoint ?? DEFAULT_TRANSCODE_URL;

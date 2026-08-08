@@ -40,8 +40,14 @@ function rotateBackups(): void {
 
 export function saveProjectSnapshot(snapshot: ProjectSnapshot): void {
   if (typeof window === "undefined") return;
+  const safe: ProjectSnapshot = {
+    ...snapshot,
+    customSheetUrl: snapshot.customSheetUrl?.startsWith("blob:")
+      ? undefined
+      : snapshot.customSheetUrl,
+  };
   rotateBackups();
-  localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snapshot));
+  localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(safe));
 }
 
 export function loadProjectSnapshot(): ProjectSnapshot | null {
@@ -98,6 +104,10 @@ export function startAutosaveTimer(
     });
   }, AUTOSAVE_INTERVAL_MS);
   return () => window.clearInterval(id);
+}
+
+export function isRestorableSheetUrl(url: string | undefined): boolean {
+  return !!url && !url.startsWith("blob:");
 }
 
 export function pushUndoEntry(sceneId: string): string[] {
