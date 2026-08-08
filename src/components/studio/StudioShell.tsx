@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScenePreview3D } from "@/components/studio/ScenePreview3D";
 import { SpritePreview2D } from "@/components/studio/SpritePreview2D";
+import { SpriteTuningPanel } from "@/components/studio/SpriteTuningPanel";
 import { SpriteUpload } from "@/components/studio/SpriteUpload";
 import { TrialControls } from "@/components/studio/TrialControls";
 import { TrialMetricsPanel } from "@/components/studio/TrialMetricsPanel";
@@ -24,6 +25,11 @@ import {
   startAutosaveTimer,
   type RestoreCandidate,
 } from "@/lib/project-autosave";
+import {
+  DEFAULT_SPRITE_TUNING,
+  applyPreset,
+  type SpriteTuning,
+} from "@/lib/sprite-tuning";
 import {
   DEMO_SCENES,
   type PreviewMode,
@@ -39,13 +45,23 @@ export function StudioShell() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [dirty, setDirty] = useState(false);
   const [restoreCandidate, setRestoreCandidate] = useState<RestoreCandidate | null>(null);
+  const [spriteTuning, setSpriteTuning] = useState<SpriteTuning>(DEFAULT_SPRITE_TUNING);
   const undoStackRef = useRef<string[]>([]);
+
+  const tunedSprite = selected.sprite
+    ? {
+        ...selected.sprite,
+        frameWidth: spriteTuning.frameWidth,
+        frameHeight: spriteTuning.frameHeight,
+        fps: spriteTuning.fps,
+        loop: spriteTuning.loop,
+        sheetUrl: customSheetUrl ?? selected.sprite.sheetUrl,
+      }
+    : undefined;
 
   const trial = useTrialPlayer({
     mode: viewMode,
-    sprite: selected.sprite
-      ? { ...selected.sprite, sheetUrl: customSheetUrl ?? selected.sprite.sheetUrl }
-      : undefined,
+    sprite: tunedSprite,
     durationMs: selected.durationMs,
     sceneId: selected.id,
     onComplete: (metrics) => {
@@ -111,6 +127,17 @@ export function StudioShell() {
   useEffect(() => {
     setViewMode(selected.mode);
     setCustomSheetUrl(undefined);
+    if (selected.sprite) {
+      setSpriteTuning(
+        applyPreset(DEFAULT_SPRITE_TUNING, {
+          frameWidth: selected.sprite.frameWidth,
+          frameHeight: selected.sprite.frameHeight,
+          fps: selected.sprite.fps,
+          loop: selected.sprite.loop,
+          manualFrame: null,
+        }),
+      );
+    }
     trial.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected.id]);
@@ -310,7 +337,7 @@ export function StudioShell() {
                 className="min-h-12 w-full rounded-md border border-border bg-input px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
               <SpriteUpload
-                config={selected.sprite}
+                config={tunedSprite ?? selected.sprite}
                 onUpload={(url) => {
                   setCustomSheetUrl(url);
                   setDirty(true);
@@ -319,6 +346,17 @@ export function StudioShell() {
               />
             </CardContent>
           </Card>
+
+          {show2d(viewMode) ? (
+            <SpriteTuningPanel
+              tuning={spriteTuning}
+              frameCount={8}
+              onChange={(next) => {
+                setSpriteTuning(next);
+                setDirty(true);
+              }}
+            />
+          ) : null}
         </aside>
 
         <section className="space-y-4">
@@ -357,17 +395,10 @@ export function StudioShell() {
                 {show2d(viewMode) ? (
                   <div className="pixel-preview rounded-md border border-border bg-black p-4">
                     <SpritePreview2D
-                      config={
-                        selected.sprite
-                          ? {
-                              ...selected.sprite,
-                              sheetUrl:
-                                customSheetUrl ?? selected.sprite.sheetUrl,
-                            }
-                          : selected.sprite
-                      }
+                      config={tunedSprite}
                       playing={playing}
                       elapsedMs={trial.elapsedMs}
+                      tuning={spriteTuning}
                     />
                   </div>
                 ) : null}

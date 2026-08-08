@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "source_project": "SynStudios",
+  "frontier_repo": "https://github.com/zowskyy/frontier-syntax",
+  "rule": "Every SynStudios feature should note a Frontier Syntax counterpart.",
+  "entries": [
+    {
+      "id": "relay-0001",
+      "created_at": "2026-08-08T17:45:00Z",
+      "synstudios_feature": "Aseprite-style 2D sprite tuning panel (speed/size/zoom/layout/onion)",
+      "frontier_target": "Sprite sheet import codegen — horizontal/vertical/grid strip layouts",
+      "insight": "Preset buttons encode frame fps, dimensions, and padding matching Aseprite export; Frontier wasm codegen can emit equivalent strip metadata structs.",
+      "frontier_file_hint": "src/wasm_codegen/ or AnimationLoader conventions in Godot bridge"
+    },
+    {
+      "id": "relay-0002",
+      "created_at": "2026-08-08T17:45:00Z",
+      "synstudios_feature": "SynStudios tracking.py phases 0–8 + independent_validate.py",
+      "frontier_target": "scripts/tracking.py gate parity for Play Store / compiler release",
+      "insight": "Taylor worker orchestration pattern (W1–W8) mirrors Frontier's phase gate model; reuse evidence JSON schema in frontier-syntax manifest/tracking_evidence.json.",
+      "frontier_file_hint": "scripts/tracking.py"
+    },
+    {
+      "id": "relay-0003",
+      "created_at": "2026-08-08T17:45:00Z",
+      "synstudios_feature": "Benchmark JSON direct Downloads save on Android",
+      "frontier_target": "Native self-host artifact export path",
+      "insight": "MediaStore Downloads write pattern validates on-device telemetry export without share sheet — applicable to Frontier benchmark manifests on Android host.",
+      "frontier_file_hint": "android/BenchmarkSavePlugin pattern"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "version": "1.0.0",
+  "project": "SynStudios",
+  "rule": "Phases validated via scripts/tracking.py gate with logged Taylor worker evidence.",
+  "phase_0_pass": true,
+  "phase_1_pass": true,
+  "phase_2_pass": true,
+  "phase_3_pass": true,
+  "phase_4_pass": true,
+  "phase_5_pass": true,
+  "phase_6_pass": true,
+  "phase_7_pass": true,
+  "phase_8_pass": true,
+  "phases": {
+    "0": {
+      "name": "Foundation",
+      "criteria": [
+        "Taylor workers W1-W8 exist",
+        "independent_validate.py",
+        "frontier_relay manifest"
+      ]
+    },
+    "1": {
+      "name": "2D Sprite Studio",
+      "criteria": [
+        "Aseprite-style tuning panel",
+        "W8 SpriteStudio pass",
+        "onion skin + sheet layouts"
+      ]
+    },
+    "2": {
+      "name": "3D Preview",
+      "criteria": [
+        "W4 SpecParity 3D tokens",
+        "30s trial player"
+      ]
+    },
+    "3": {
+      "name": "Android Export",
+      "criteria": [
+        "W5 minSdk>=24",
+        "ABI filters",
+        "debug APK workflow"
+      ]
+    },
+    "4": {
+      "name": "Benchmark",
+      "criteria": [
+        "benchmark page",
+        "JSON export to Downloads"
+      ]
+    },
+    "5": {
+      "name": "Play Store Docs",
+      "criteria": [
+        "W3 policy",
+        "W7 launch continuity",
+        "privacy + data_safety"
+      ]
+    },
+    "6": {
+      "name": "Release Ops",
+      "criteria": [
+        "W6 version manifest",
+        "release checklist"
+      ]
+    },
+    "7": {
+      "name": "Independent Validation",
+      "criteria": [
+        "independent_validate.py exit 0"
+      ]
+    },
+    "8": {
+      "name": "Frontier Relay",
+      "criteria": [
+        "frontier_relay.json entries",
+        "synstudios\u2192frontier-syntax mappings"
+      ]
+    }
+  }
+}

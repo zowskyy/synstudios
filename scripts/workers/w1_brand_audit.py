@@ -21,7 +21,7 @@ SECRET_PATTERNS = [
     r"-----BEGIN (RSA |EC )?PRIVATE KEY-----",
 ]
 SKIP_DIRS = {"node_modules", ".next", "out", "android", ".git", "dist", "build"}
-SKIP_FILES = {"bun.lock", "package-lock.json"}
+SKIP_FILES = {"bun.lock", "package-lock.json", "CONTEXT.md"}
 TEXT_EXT = {".ts", ".tsx", ".js", ".jsx", ".json", ".md", ".xml", ".gradle", ".properties", ".html", ".css", ".env", ".prisma", ".svg"}
 
 

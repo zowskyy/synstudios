@@ -1,0 +1,97 @@
+{
+  "all_pass": true,
+  "max_phase": 8,
+  "phase_0_pass": true,
+  "phase_1_pass": true,
+  "phase_2_pass": true,
+  "phase_3_pass": true,
+  "phase_4_pass": true,
+  "phase_5_pass": true,
+  "phase_6_pass": true,
+  "phase_7_pass": true,
+  "phase_8_pass": true,
+  "checks": {
+    "0.1_workers": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "[PASS] scripts/workers/w1_brand_audit.py: PASS: SynStudios brand audit \u2014 no forbidden names or secrets\n[PASS] scripts/workers/w2_web_build.py: PASS: static export at /workspace/out (45 files)\n[PASS] scripts/workers/w3_playstore_policy.py: PASS: Play Store policy checklist complete\n[PASS] scripts/workers/w4_feature_parity.py: PASS: 2D sprite + 3D animation feature parity verified\n[PASS] scripts/workers/w5_android_validate.py: PASS: export size 1.70MB, Android config valid\n[PASS] scripts/workers/w6_release_ops.py: PASS: release manifest written to manifest/release.json\n[PASS] scripts/workers/w7_launch_continuity.py: PASS: launch continuity docs complete\n[PASS] scripts/workers/w8_sprite_studio.py: PASS: Aseprite-style 2D sprite studio parity verified\nPASS: independent validation \u2014 all Taylor workers verified\n",
+      "command": "/usr/bin/python3 scripts/independent_validate.py"
+    },
+    "0.2_tracking_manifest": {
+      "pass": true
+    },
+    "0.3_frontier_relay": {
+      "pass": true
+    },
+    "1.1_sprite_tuning": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: Aseprite-style 2D sprite studio parity verified\n",
+      "command": "/usr/bin/python3 scripts/workers/w8_sprite_studio.py"
+    },
+    "1.2_tuning_panel": {
+      "pass": true
+    },
+    "1.3_onion_skin": {
+      "pass": true
+    },
+    "2.1_spec_parity": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: 2D sprite + 3D animation feature parity verified\n",
+      "command": "/usr/bin/python3 scripts/workers/w4_feature_parity.py"
+    },
+    "2.2_trial_player": {
+      "pass": true
+    },
+    "3.1_android": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: export size 1.70MB, Android config valid\n",
+      "command": "/usr/bin/python3 scripts/workers/w5_android_validate.py"
+    },
+    "3.2_capacitor": {
+      "pass": true
+    },
+    "4.1_benchmark": {
+      "pass": true
+    },
+    "4.2_downloads_save": {
+      "pass": true
+    },
+    "5.1_policy": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: Play Store policy checklist complete\n",
+      "command": "/usr/bin/python3 scripts/workers/w3_playstore_policy.py"
+    },
+    "5.2_launch": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: launch continuity docs complete\n",
+      "command": "/usr/bin/python3 scripts/workers/w7_launch_continuity.py"
+    },
+    "6.1_release_ops": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: release manifest written to manifest/release.json\n",
+      "command": "/usr/bin/python3 scripts/workers/w6_release_ops.py"
+    },
+    "6.2_web_build": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "\n> synstudios@1.0.0 build:mobile\n> cross-env MOBILE_EXPORT=1 next build\n\n\u25b2 Next.js 16.3.0 (Turbopack)\n\u2713 Running next.config.ts took 15ms\n\n  Creating an optimized production build ...\n\u2713 Compiled successfully in 334ms\n  Skipping validation of types\n  Finished TypeScript config validation in 2ms ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/4) ...\n  Generating static pages using 3 workers (1/4) \n  Generating static pages using 3 workers (2/4) \n  Generating static pages using 3 workers (3/4) \n\u2713 Generating static pages using 3 workers (4/4) in 156ms\n  Finalizing page optimization ...\n\nRoute (app)\n\u250c \u25cb /\n\u251c \u25cb /_not-found\n\u2514 \u25cb /benchmark\n\n\n\u25cb  (Static)  prerendered as static content\n\nPASS: static export at /workspace/out (45 files)\n",
+      "command": "/usr/bin/python3 scripts/workers/w2_web_build.py"
+    },
+    "7.1_independent": {
+      "pass": true,
+      "exit_code": 0,
+      "output": "[PASS] scripts/workers/w1_brand_audit.py: PASS: SynStudios brand audit \u2014 no forbidden names or secrets\n[PASS] scripts/workers/w2_web_build.py: PASS: static export at /workspace/out (45 files)\n[PASS] scripts/workers/w3_playstore_policy.py: PASS: Play Store policy checklist complete\n[PASS] scripts/workers/w4_feature_parity.py: PASS: 2D sprite + 3D animation feature parity verified\n[PASS] scripts/workers/w5_android_validate.py: PASS: export size 1.70MB, Android config valid\n[PASS] scripts/workers/w6_release_ops.py: PASS: release manifest written to manifest/release.json\n[PASS] scripts/workers/w7_launch_continuity.py: PASS: launch continuity docs complete\n[PASS] scripts/workers/w8_sprite_studio.py: PASS: Aseprite-style 2D sprite studio parity verified\nPASS: independent validation \u2014 all Taylor workers verified\n",
+      "command": "/usr/bin/python3 scripts/independent_validate.py"
+    },
+    "8.1_relay_script": {
+      "pass": true
+    }
+  },
+  "audited_at": "2026-08-08T17:47:19.225769+00:00"
+}

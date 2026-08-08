@@ -11,7 +11,7 @@ REQUIRED_SOURCES = [
     ("src/components/studio/SpritePreview2D.tsx", ["frameWidth", "fps", "canvas"]),
     ("src/components/studio/ScenePreview3DInner.tsx", ["Canvas", "useFrame", "OrbitControls"]),
     ("src/components/studio/StudioShell.tsx", ["SynStudios", "split", "2d", "3d"]),
-    ("src/hooks/use-trial-player.ts", ["TRIAL_DURATION_MS", "30000"]),
+    ("src/hooks/use-trial-player.ts", ["TRIAL_DURATION_MS", "requestAnimationFrame"]),
     ("src/lib/sprite-sheet.ts", ["horizontal", "frameWidth"]),
 ]
 

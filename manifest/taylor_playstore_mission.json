@@ -1,0 +1,162 @@
+{
+  "run_id": "20260808T174733Z",
+  "mode": "production",
+  "started_at": "2026-08-08T17:47:29.972601+00:00",
+  "finished_at": "2026-08-08T17:47:33.285424+00:00",
+  "workers": [
+    {
+      "id": "W1_GateKeeper",
+      "name": "GateKeeper",
+      "group": 1,
+      "role": "Brand rebrand audit + secret scan",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w1_brand_audit.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 1.861,
+          "stdout_tail": "PASS: SynStudios brand audit \u2014 no forbidden names or secrets\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:29.972601+00:00",
+      "finished_at": "2026-08-08T17:47:31.833196+00:00"
+    },
+    {
+      "id": "W2_BuildCore",
+      "name": "BuildCore",
+      "group": 1,
+      "role": "Next.js static export for Capacitor",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w2_web_build.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 1.393,
+          "stdout_tail": "\n> synstudios@1.0.0 build:mobile\n> cross-env MOBILE_EXPORT=1 next build\n\n\u25b2 Next.js 16.3.0 (Turbopack)\n\u2713 Running next.config.ts took 20ms\n\n  Creating an optimized production build ...\n\u2713 Compiled successfully in 358ms\n  Skipping validation of types\n  Finished TypeScript config validation in 3ms ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/4) ...\n  Generating static pages using 3 workers (1/4) \n  Generating static pages using 3 workers (2/4) \n  Generating static pages using 3 workers (3/4) \n\u2713 Generating static pages using 3 workers (4/4) in 159ms\n  Finalizing page optimization ...\n\nRoute (app)\n\u250c \u25cb /\n\u251c \u25cb /_not-found\n\u2514 \u25cb /benchmark\n\n\n\u25cb  (Static)  prerendered as static content\n\nPASS: static export at /workspace/out (45 files)\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:31.833213+00:00",
+      "finished_at": "2026-08-08T17:47:33.226440+00:00"
+    },
+    {
+      "id": "W3_AuditGuardian",
+      "name": "AuditGuardian",
+      "group": 1,
+      "role": "Play Store policy + privacy checklist",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w3_playstore_policy.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.019,
+          "stdout_tail": "PASS: Play Store policy checklist complete\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:33.226457+00:00",
+      "finished_at": "2026-08-08T17:47:33.245504+00:00"
+    },
+    {
+      "id": "W4_SpecParity",
+      "name": "SpecParity",
+      "group": 2,
+      "role": "2D sprite + 3D animation feature verification",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w4_feature_parity.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.017,
+          "stdout_tail": "PASS: 2D sprite + 3D animation feature parity verified\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:33.245997+00:00",
+      "finished_at": "2026-08-08T17:47:33.263457+00:00"
+    },
+    {
+      "id": "W8_SpriteStudio",
+      "name": "SpriteStudio",
+      "group": 2,
+      "role": "Aseprite-inspired 2D tuning panel parity",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w8_sprite_studio.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.018,
+          "stdout_tail": "PASS: Aseprite-style 2D sprite studio parity verified\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:33.246829+00:00",
+      "finished_at": "2026-08-08T17:47:33.264817+00:00"
+    },
+    {
+      "id": "W5_BundleSizer",
+      "name": "BundleSizer",
+      "group": 2,
+      "role": "Export size + Android manifest validation",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w5_android_validate.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.02,
+          "stdout_tail": "PASS: export size 1.70MB, Android config valid\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:33.246382+00:00",
+      "finished_at": "2026-08-08T17:47:33.266195+00:00"
+    },
+    {
+      "id": "W7_LaunchContinuity",
+      "name": "LaunchContinuity",
+      "group": 3,
+      "role": "Store listing + submission guide completeness",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w7_launch_continuity.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.017,
+          "stdout_tail": "PASS: launch continuity docs complete\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:33.267187+00:00",
+      "finished_at": "2026-08-08T17:47:33.284051+00:00"
+    },
+    {
+      "id": "W6_ReleaseOps",
+      "name": "ReleaseOps",
+      "group": 3,
+      "role": "Release signing config + version manifest",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w6_release_ops.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.018,
+          "stdout_tail": "PASS: release manifest written to manifest/release.json\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T17:47:33.266742+00:00",
+      "finished_at": "2026-08-08T17:47:33.285249+00:00"
+    }
+  ],
+  "production_ready": true,
+  "play_store_ready": true
+}

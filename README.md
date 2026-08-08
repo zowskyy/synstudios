@@ -80,4 +80,4 @@ Matches Godot `AnimationLoader`:
 
 ## Rebrand
 
-All product naming uses **SynStudios**. Former Pulse Studio references removed from shipped UI.
+All product naming uses **SynStudios** only in shipped UI and store assets.
