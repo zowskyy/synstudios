@@ -1,10 +1,11 @@
 import { Capacitor } from "@capacitor/core";
-import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
+import { BenchmarkSave } from "@/lib/benchmark-save-plugin";
 import type { BenchmarkRun } from "@/lib/trial-types";
 
 export type BenchmarkExportResult =
-  | { method: "download"; fileName: string }
+  | { method: "download"; fileName: string; path?: string }
+  | { method: "files"; fileName: string; path: string }
   | { method: "share"; fileName: string }
   | { method: "clipboard"; fileName: string };
 
@@ -32,31 +33,25 @@ async function exportViaWebDownload(
   return { method: "download", fileName };
 }
 
+async function exportViaDownloads(
+  run: BenchmarkRun,
+  fileName: string,
+): Promise<BenchmarkExportResult> {
+  const content = benchmarkJson(run);
+  const { path } = await BenchmarkSave.saveJsonToDownloads({ fileName, content });
+  return { method: "files", fileName, path };
+}
+
 async function exportViaNativeShare(
   run: BenchmarkRun,
   fileName: string,
 ): Promise<BenchmarkExportResult> {
   const content = benchmarkJson(run);
-
-  await Filesystem.writeFile({
-    path: fileName,
-    data: content,
-    directory: Directory.Cache,
-    encoding: Encoding.UTF8,
-  });
-
-  const { uri } = await Filesystem.getUri({
-    path: fileName,
-    directory: Directory.Cache,
-  });
-
   await Share.share({
     title: "SynStudios benchmark",
     text: content,
-    url: uri,
-    dialogTitle: "Save or share benchmark JSON",
+    dialogTitle: "Share benchmark JSON",
   });
-
   return { method: "share", fileName };
 }
 
@@ -90,10 +85,15 @@ export async function exportBenchmarkJson(
   }
 
   try {
-    return await exportViaNativeShare(run, fileName);
+    return await exportViaDownloads(run, fileName);
   } catch (error) {
-    console.error("Native benchmark share failed, falling back to clipboard", error);
-    return exportViaClipboard(run, fileName);
+    console.error("Direct Downloads save failed, trying share sheet", error);
+    try {
+      return await exportViaNativeShare(run, fileName);
+    } catch (shareError) {
+      console.error("Share sheet failed, falling back to clipboard", shareError);
+      return exportViaClipboard(run, fileName);
+    }
   }
 }
 
@@ -101,6 +101,8 @@ export function exportResultMessage(result: BenchmarkExportResult): string {
   switch (result.method) {
     case "download":
       return `Downloaded ${result.fileName}`;
+    case "files":
+      return `Saved to ${result.path}`;
     case "share":
       return `Opened share sheet for ${result.fileName}`;
     case "clipboard":

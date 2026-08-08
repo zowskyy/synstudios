@@ -83,10 +83,10 @@ export function TrialMetricsPanel({
               className="w-full"
               onClick={() => void exportBenchmark()}
               disabled={exporting}
-              aria-label="Export benchmark JSON"
+              aria-label="Save benchmark JSON to Downloads"
             >
               <Download className="h-4 w-4" />
-              {exporting ? "Exporting…" : "Export benchmark JSON"}
+              {exporting ? "Saving…" : "Save benchmark JSON"}
             </Button>
             {exportMessage ? (
               <p className="text-center text-xs text-muted-foreground" role="status">

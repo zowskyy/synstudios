@@ -59,10 +59,14 @@ def main() -> int:
     manifest = ROOT / "android/app/src/main/AndroidManifest.xml"
     if manifest.exists():
         text = manifest.read_text(encoding="utf-8")
-        for perm in ("READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"):
-            if perm in text:
-                print(f"FAIL: AndroidManifest must not declare {perm}")
-                return 1
+        if "READ_EXTERNAL_STORAGE" in text:
+            print("FAIL: AndroidManifest must not declare READ_EXTERNAL_STORAGE")
+            return 1
+        if "WRITE_EXTERNAL_STORAGE" in text and "maxSdkVersion=\"28\"" not in text:
+            print(
+                "FAIL: WRITE_EXTERNAL_STORAGE only allowed with maxSdkVersion=28 for legacy devices"
+            )
+            return 1
 
     print(f"PASS: export size {size_mb:.2f}MB, Android config valid")
     return 0

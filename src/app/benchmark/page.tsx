@@ -67,8 +67,8 @@ export default function BenchmarkPage() {
             </p>
             <p>
               Platform detected: <strong className="text-white">{platform}</strong>.
-              On completion, JSON exports via download (web) or the Android share
-              sheet (APK) for{" "}
+              On completion, JSON saves to your Downloads folder (APK) or downloads
+              automatically (web) for{" "}
               <code className="text-white">scripts/benchmark-compare.py</code>.
             </p>
           </CardContent>
