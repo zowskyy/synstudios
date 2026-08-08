@@ -8,26 +8,49 @@ import { loadSpriteSheetFile } from "@/lib/asset-loader";
 import { ASSET_BUDGET, formatBytes } from "@/lib/asset-budget";
 import type { SpriteAnimConfig } from "@/lib/trial-types";
 
+export type SpriteUploadResult = {
+  url: string;
+  fileName: string;
+  isProxy?: boolean;
+  frameWidth?: number;
+  frameHeight?: number;
+  frameCount?: number;
+};
+
 type SpriteUploadProps = {
   config?: SpriteAnimConfig;
-  onUpload: (url: string, fileName: string) => void;
+  onUpload: (result: SpriteUploadResult) => void;
 };
 
 export function SpriteUpload({ config, onUpload }: SpriteUploadProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [proxyNote, setProxyNote] = useState<string | null>(null);
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
     setLoading(true);
     setError(null);
+    setProxyNote(null);
     const result = await loadSpriteSheetFile(file);
     setLoading(false);
     if (!result.ok) {
       setError(result.message);
       return;
     }
-    onUpload(result.url, result.fileName);
+    if (result.isProxy) {
+      setProxyNote(
+        `Proxy strip built (${result.frameCount ?? 8} frames · ${result.frameWidth ?? "?"}×${result.frameHeight ?? "?"} px) — full sheet not kept in memory.`,
+      );
+    }
+    onUpload({
+      url: result.url,
+      fileName: result.fileName,
+      isProxy: result.isProxy,
+      frameWidth: result.frameWidth,
+      frameHeight: result.frameHeight,
+      frameCount: result.frameCount,
+    });
   }
 
   return (
@@ -39,6 +62,9 @@ export function SpriteUpload({ config, onUpload }: SpriteUploadProps) {
           PNG/WebP strip · max {formatBytes(ASSET_BUDGET.maxSpriteSheetBytes)} ·{" "}
           {config?.frameWidth ?? 32}×{config?.frameHeight ?? 48}
         </span>
+        <span className="mt-1 text-[10px] text-muted-foreground">
+          Larger sheets auto-downscale to 8-frame proxy
+        </span>
         <input
           type="file"
           accept="image/png,image/webp"
@@ -48,6 +74,11 @@ export function SpriteUpload({ config, onUpload }: SpriteUploadProps) {
           onChange={(e) => void handleFile(e.target.files?.[0])}
         />
       </label>
+      {proxyNote ? (
+        <p className="text-xs text-amber-300/90" role="status">
+          {proxyNote}
+        </p>
+      ) : null}
       {error ? (
         <p className="text-xs text-red-400" role="alert">
           {error}

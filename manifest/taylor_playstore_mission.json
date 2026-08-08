@@ -1,8 +1,8 @@
 {
-  "run_id": "20260808T180531Z",
+  "run_id": "20260808T181733Z",
   "mode": "production",
-  "started_at": "2026-08-08T18:05:28.404421+00:00",
-  "finished_at": "2026-08-08T18:05:31.895973+00:00",
+  "started_at": "2026-08-08T18:17:30.005339+00:00",
+  "finished_at": "2026-08-08T18:17:33.416696+00:00",
   "workers": [
     {
       "id": "W1_GateKeeper",
@@ -14,14 +14,14 @@
           "command": "/usr/bin/python3 scripts/workers/w1_brand_audit.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 1.992,
+          "duration_s": 1.902,
           "stdout_tail": "PASS: SynStudios brand audit \u2014 no forbidden names or secrets\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:28.404421+00:00",
-      "finished_at": "2026-08-08T18:05:30.396641+00:00"
+      "started_at": "2026-08-08T18:17:30.005339+00:00",
+      "finished_at": "2026-08-08T18:17:31.907320+00:00"
     },
     {
       "id": "W2_BuildCore",
@@ -33,14 +33,14 @@
           "command": "/usr/bin/python3 scripts/workers/w2_web_build.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 1.44,
-          "stdout_tail": "\n> synstudios@1.0.0 build:mobile\n> cross-env MOBILE_EXPORT=1 next build\n\n\u25b2 Next.js 16.3.0 (Turbopack)\n\u2713 Running next.config.ts took 21ms\n\n  Creating an optimized production build ...\n\u2713 Compiled successfully in 363ms\n  Skipping validation of types\n  Finished TypeScript config validation in 3ms ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/5) ...\n  Generating static pages using 3 workers (1/5) \n  Generating static pages using 3 workers (2/5) \n  Generating static pages using 3 workers (3/5) \n\u2713 Generating static pages using 3 workers (5/5) in 165ms\n  Finalizing page optimization ...\n\nRoute (app)\n\u250c \u25cb /\n\u251c \u25cb /_not-found\n\u251c \u25cb /assets\n\u2514 \u25cb /benchmark\n\n\n\u25cb  (Static)  prerendered as static content\n\nPASS: static export at /workspace/out (53 files)\n",
+          "duration_s": 1.449,
+          "stdout_tail": "\n> synstudios@1.0.0 build:mobile\n> cross-env MOBILE_EXPORT=1 next build\n\n\u25b2 Next.js 16.3.0 (Turbopack)\n\u2713 Running next.config.ts took 21ms\n\n  Creating an optimized production build ...\n\u2713 Compiled successfully in 371ms\n  Skipping validation of types\n  Finished TypeScript config validation in 3ms ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/5) ...\n  Generating static pages using 3 workers (1/5) \n  Generating static pages using 3 workers (2/5) \n  Generating static pages using 3 workers (3/5) \n\u2713 Generating static pages using 3 workers (5/5) in 175ms\n  Finalizing page optimization ...\n\nRoute (app)\n\u250c \u25cb /\n\u251c \u25cb /_not-found\n\u251c \u25cb /assets\n\u2514 \u25cb /benchmark\n\n\n\u25cb  (Static)  prerendered as static content\n\nPASS: static export at /workspace/out (53 files)\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:30.396659+00:00",
-      "finished_at": "2026-08-08T18:05:31.836877+00:00"
+      "started_at": "2026-08-08T18:17:31.907338+00:00",
+      "finished_at": "2026-08-08T18:17:33.355916+00:00"
     },
     {
       "id": "W3_AuditGuardian",
@@ -58,8 +58,8 @@
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:31.836910+00:00",
-      "finished_at": "2026-08-08T18:05:31.856171+00:00"
+      "started_at": "2026-08-08T18:17:33.355941+00:00",
+      "finished_at": "2026-08-08T18:17:33.375406+00:00"
     },
     {
       "id": "W4_SpecParity",
@@ -71,14 +71,14 @@
           "command": "/usr/bin/python3 scripts/workers/w4_feature_parity.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 0.017,
+          "duration_s": 0.019,
           "stdout_tail": "PASS: 2D sprite + 3D animation feature parity verified\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:31.856630+00:00",
-      "finished_at": "2026-08-08T18:05:31.873806+00:00"
+      "started_at": "2026-08-08T18:17:33.375997+00:00",
+      "finished_at": "2026-08-08T18:17:33.394998+00:00"
     },
     {
       "id": "W5_BundleSizer",
@@ -90,14 +90,33 @@
           "command": "/usr/bin/python3 scripts/workers/w5_android_validate.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 0.019,
-          "stdout_tail": "PASS: export size 1.76MB, Android config valid\n",
+          "duration_s": 0.02,
+          "stdout_tail": "PASS: export size 1.77MB, Android config valid\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:31.857226+00:00",
-      "finished_at": "2026-08-08T18:05:31.876158+00:00"
+      "started_at": "2026-08-08T18:17:33.376608+00:00",
+      "finished_at": "2026-08-08T18:17:33.396443+00:00"
+    },
+    {
+      "id": "W7_LaunchContinuity",
+      "name": "LaunchContinuity",
+      "group": 3,
+      "role": "Store listing + submission guide completeness",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w7_launch_continuity.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.017,
+          "stdout_tail": "PASS: launch continuity docs complete\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-08T18:17:33.397142+00:00",
+      "finished_at": "2026-08-08T18:17:33.414489+00:00"
     },
     {
       "id": "W10_AssetRoadmap",
@@ -115,27 +134,8 @@
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:31.877103+00:00",
-      "finished_at": "2026-08-08T18:05:31.893943+00:00"
-    },
-    {
-      "id": "W7_LaunchContinuity",
-      "name": "LaunchContinuity",
-      "group": 3,
-      "role": "Store listing + submission guide completeness",
-      "steps": [
-        {
-          "command": "/usr/bin/python3 scripts/workers/w7_launch_continuity.py",
-          "exit_code": 0,
-          "pass": true,
-          "duration_s": 0.018,
-          "stdout_tail": "PASS: launch continuity docs complete\n",
-          "stderr_tail": ""
-        }
-      ],
-      "ok": true,
-      "started_at": "2026-08-08T18:05:31.876874+00:00",
-      "finished_at": "2026-08-08T18:05:31.894477+00:00"
+      "started_at": "2026-08-08T18:17:33.397457+00:00",
+      "finished_at": "2026-08-08T18:17:33.414868+00:00"
     },
     {
       "id": "W6_ReleaseOps",
@@ -153,8 +153,8 @@
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:05:31.876769+00:00",
-      "finished_at": "2026-08-08T18:05:31.895620+00:00"
+      "started_at": "2026-08-08T18:17:33.396994+00:00",
+      "finished_at": "2026-08-08T18:17:33.416463+00:00"
     }
   ],
   "production_ready": true,

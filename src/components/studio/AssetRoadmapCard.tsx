@@ -17,7 +17,7 @@ export function AssetRoadmapCard() {
       <CardContent className="space-y-2 text-xs text-muted-foreground">
         <p>
           Sprite strips up to <strong className="text-white">{formatBytes(ASSET_BUDGET.maxSpriteSheetBytes)}</strong> load
-          on-device. Heavier UE/Godot exports use proxy preview (roadmap Phase 2+).
+          on-device. Heavier sheets auto-build an 8-frame proxy; Godot/UE exports use <strong className="text-white">trial.json</strong>.
         </p>
         <Link href="/assets" className="inline-block text-white underline underline-offset-2">
           Read asset import roadmap →

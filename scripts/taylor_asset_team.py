@@ -20,6 +20,7 @@ PYTHON = sys.executable
 
 WORKERS = [
     ("W10_AssetRoadmap", [PYTHON, "scripts/workers/w10_asset_roadmap.py"]),
+    ("W11_ProxyPreview", [PYTHON, "scripts/workers/w11_proxy_preview.py"]),
     ("W5_BundleSizer", [PYTHON, "scripts/workers/w5_android_validate.py"]),
     ("W8_SpriteStudio", [PYTHON, "scripts/workers/w8_sprite_studio.py"]),
 ]
