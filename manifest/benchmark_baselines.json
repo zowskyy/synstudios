@@ -1,0 +1,23 @@
+{
+  "version": "1",
+  "description": "Checked-in device benchmark baselines for regression checks",
+  "tolerances": {
+    "avgFpsMinRatio": 0.85,
+    "minFpsMinRatio": 0.85,
+    "maxFrameDropsDelta": 5,
+    "minAbsoluteAvgFps": 30
+  },
+  "baselines": [
+    {
+      "id": "android-hero-walk-2d-sm-a376u",
+      "platform": "android",
+      "sceneId": "hero-walk-2d",
+      "device": "SM-A376U",
+      "appVersion": "1.1.0",
+      "apkTag": "debug-v1.1.0-9",
+      "file": "benchmarks/baseline/android-hero-walk-2d-sm-a376u.json",
+      "recordedAt": "2026-08-08T19:57:35.058Z",
+      "notes": "Android 16, Chrome 150 WebView, 120Hz display, hero-walk-2d 30s trial"
+    }
+  ]
+}

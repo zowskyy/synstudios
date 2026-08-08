@@ -30,6 +30,7 @@ WORKERS = [
     "scripts/workers/w13_project_folder.py",
     "scripts/workers/w14_cloud_transcode.py",
     "scripts/workers/w15_frontier_bridge.py",
+    "scripts/workers/w16_benchmark_baseline.py",
 ]
 
 
