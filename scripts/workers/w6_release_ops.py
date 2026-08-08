@@ -29,6 +29,8 @@ def main() -> int:
         BUILD_GRADLE,
         KEYSTORE_TEMPLATE,
         ROOT / "scripts/build-release-aab.ps1",
+        ROOT / "scripts/build-release-aab.sh",
+        ROOT / "scripts/package-releases.sh",
         PACKAGE_JSON,
     ]
     missing = [p for p in required if not p.exists()]

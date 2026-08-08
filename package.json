@@ -24,7 +24,8 @@
     "benchmark:baseline": "python3 scripts/benchmark-compare.py --against-baseline",
     "benchmark:baselines": "python3 scripts/benchmark-compare.py --list-baselines",
     "taylor:playstore": "python scripts/taylor_playstore_team.py --mode production",
-    "taylor:asset": "python3 scripts/taylor_asset_team.py"
+    "taylor:asset": "python3 scripts/taylor_asset_team.py",
+    "taylor:launch": "bash scripts/taylor-launch-loop.sh"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",

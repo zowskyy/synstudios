@@ -1,8 +1,8 @@
 # SynStudios Release Readiness
 
 **Verdict:** RELEASE_READY
-**Version:** 1.0.0-rc.1
-**Audited:** 2026-08-08T23:43:06.709467Z
+**Version:** 1.1.0
+**Audited:** 2026-08-08T23:50:37.790574Z
 
 ## Checks
 
