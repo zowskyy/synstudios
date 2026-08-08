@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model TrialRun {
+  id         String   @id @default(cuid())
+  sceneId    String
+  reviewer   String   @default("anonymous")
+  mode       String
+  avgFps     Float
+  minFps     Float
+  frameDrops Int
+  passed     Boolean
+  createdAt  DateTime @default(now())
+}
+
+model TrialScene {
+  id          String   @id @default(cuid())
+  title       String
+  mode        String
+  durationMs  Int      @default(30000)
+  spriteJson  String?
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

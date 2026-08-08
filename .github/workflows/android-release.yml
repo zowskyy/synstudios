@@ -1,0 +1,53 @@
+name: SynStudios Android Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  taylor-playstore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: synstudios/package.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install dependencies
+        working-directory: synstudios
+        run: npm install
+
+      - name: Taylor Play Store workers (W1-W4, W6-W7)
+        working-directory: synstudios
+        run: |
+          python scripts/workers/w1_brand_audit.py
+          python scripts/workers/w4_feature_parity.py
+          python scripts/workers/w6_release_ops.py
+          python scripts/workers/w7_launch_continuity.py
+
+      - name: Build mobile static export
+        working-directory: synstudios
+        run: npm run build:mobile
+
+      - name: Capacitor sync
+        working-directory: synstudios
+        run: |
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Validate Android config
+        working-directory: synstudios
+        run: python scripts/workers/w5_android_validate.py
+
+      - name: Build debug AAB (CI validation)
+        working-directory: synstudios/android
+        run: ./gradlew bundleRelease
