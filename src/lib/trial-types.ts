@@ -106,13 +106,3 @@ export function buildBenchmarkRun(
     userAgent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
   };
 }
-
-export function downloadBenchmarkJson(run: BenchmarkRun): void {
-  const blob = new Blob([JSON.stringify(run, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = `synstudios-benchmark-${run.platform}-${run.sceneId}-${Date.now()}.json`;
-  anchor.click();
-  URL.revokeObjectURL(url);
-}

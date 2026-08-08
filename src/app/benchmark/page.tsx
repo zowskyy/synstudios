@@ -16,8 +16,8 @@ import {
   BENCHMARK_SCENE_ID,
   DEMO_SCENES,
   buildBenchmarkRun,
-  downloadBenchmarkJson,
 } from "@/lib/trial-types";
+import { exportBenchmarkJson } from "@/lib/benchmark-export";
 
 const BENCHMARK_SCENE = DEMO_SCENES.find((s) => s.id === BENCHMARK_SCENE_ID)!;
 
@@ -33,9 +33,7 @@ export default function BenchmarkPage() {
     onComplete: (metrics) => {
       if (exportedRef.current) return;
       exportedRef.current = true;
-      downloadBenchmarkJson(
-        buildBenchmarkRun(BENCHMARK_SCENE, metrics),
-      );
+      void exportBenchmarkJson(buildBenchmarkRun(BENCHMARK_SCENE, metrics));
     },
   });
 
@@ -69,7 +67,8 @@ export default function BenchmarkPage() {
             </p>
             <p>
               Platform detected: <strong className="text-white">{platform}</strong>.
-              On completion, a JSON file downloads automatically for{" "}
+              On completion, JSON exports via download (web) or the Android share
+              sheet (APK) for{" "}
               <code className="text-white">scripts/benchmark-compare.py</code>.
             </p>
           </CardContent>
