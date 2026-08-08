@@ -1,5 +1,6 @@
 "use client";
 
+import { isNativeApp } from "@/components/CapacitorInit";
 import { useState } from "react";
 import { CloudUpload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,7 @@ export function CloudTranscodePanel({ onPack }: CloudTranscodePanelProps) {
         <p className="text-[10px] text-muted-foreground">
           Optional cloud lane returns a &lt;2 MB trial pack. Offline-first: builds proxy strip locally
           when cloud is unavailable. Deleted after 24h when cloud is used.
+          {isNativeApp() ? " Cloud upload is web-only; APK always builds on-device." : null}
         </p>
         <label className="flex items-start gap-2 text-xs text-muted-foreground">
           <input
@@ -58,6 +60,7 @@ export function CloudTranscodePanel({ onPack }: CloudTranscodePanelProps) {
             checked={optedIn}
             onChange={(e) => setOptedIn(e.target.checked)}
             className="mt-0.5"
+            disabled={isNativeApp()}
             aria-label="Opt in to cloud transcode upload"
           />
           <span>

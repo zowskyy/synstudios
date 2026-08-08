@@ -23,7 +23,12 @@ export function UserGltfModel({
   tuning,
 }: UserGltfModelProps) {
   const groupRef = useRef<Group>(null);
-  const { scene } = useGLTF(url, undefined, undefined, configureGltfLoader);
+  const { scene } = useGLTF(
+    url,
+    undefined,
+    undefined,
+    configureGltfLoader as unknown as NonNullable<Parameters<typeof useGLTF>[3]>,
+  );
 
   const prepared = useMemo(() => {
     const clone = scene.clone(true);

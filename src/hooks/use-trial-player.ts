@@ -34,6 +34,7 @@ export function useTrialPlayer({
     frameDrops: 0,
     mode,
     platform: "unknown",
+    fpsKind: "raf",
   });
 
   const rafRef = useRef<number | null>(null);
@@ -43,12 +44,20 @@ export function useTrialPlayer({
   const fpsSamplesRef = useRef<number[]>([]);
   const lastFrameRef = useRef<number>(0);
   const frameDropsRef = useRef(0);
+  const statusRef = useRef<TrialStatus>(status);
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+
+  useEffect(() => {
+    statusRef.current = status;
+  }, [status]);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   const tick = useCallback(
     (now: number) => {
-      if (status !== "running") return;
+      if (statusRef.current !== "running") return;
 
       const elapsed = now - startRef.current - pauseAccumRef.current;
       if (lastFrameRef.current > 0) {
@@ -75,9 +84,11 @@ export function useTrialPlayer({
           platform: detectPlatform(),
           sceneId,
           timestamp: new Date().toISOString(),
+          fpsKind: "raf",
         };
         setElapsedMs(durationMs);
         setMetrics(finalMetrics);
+        statusRef.current = "complete";
         setStatus("complete");
         onCompleteRef.current?.(finalMetrics);
         return;
@@ -86,7 +97,7 @@ export function useTrialPlayer({
       setElapsedMs(elapsed);
       rafRef.current = requestAnimationFrame(tick);
     },
-    [durationMs, mode, sceneId, status],
+    [durationMs, mode, sceneId],
   );
 
   useEffect(() => {
@@ -113,25 +124,31 @@ export function useTrialPlayer({
       mode,
       platform: detectPlatform(),
       sceneId,
+      fpsKind: "raf",
     });
+    statusRef.current = "running";
     setStatus("running");
   }, [mode, sceneId]);
 
   const pause = useCallback(() => {
-    if (status !== "running") return;
+    if (statusRef.current !== "running") return;
     pausedAtRef.current = performance.now();
+    statusRef.current = "paused";
     setStatus("paused");
-  }, [status]);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  }, []);
 
   const resume = useCallback(() => {
-    if (status !== "paused") return;
+    if (statusRef.current !== "paused") return;
     pauseAccumRef.current += performance.now() - pausedAtRef.current;
     lastFrameRef.current = 0;
+    statusRef.current = "running";
     setStatus("running");
-  }, [status]);
+  }, []);
 
   const stop = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    statusRef.current = "idle";
     setStatus("idle");
     setElapsedMs(0);
   }, []);

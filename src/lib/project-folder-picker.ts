@@ -34,8 +34,9 @@ async function walkDirectoryHandle(
 }
 
 export async function pickProjectFolder(): Promise<ProjectFolderPickResult> {
-  if (typeof window !== "undefined" && "showDirectoryPicker" in window) {
-    const dir = await window.showDirectoryPicker({ mode: "read" });
+  const picker = typeof window !== "undefined" ? window.showDirectoryPicker : undefined;
+  if (picker) {
+    const dir = await picker.call(window, { mode: "read" });
     const files = new Map<string, File>();
     const fileList: File[] = [];
     await walkDirectoryHandle(dir, "", files, fileList);

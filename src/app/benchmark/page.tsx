@@ -66,6 +66,10 @@ export default function BenchmarkPage() {
               the web app and the Android APK.
             </p>
             <p>
+              Timer metrics use RAF (often ~120 on high-refresh phones). The 3D panel below
+              renders separately and is not included in the JSON export for this 2D scene.
+            </p>
+            <p>
               Platform detected: <strong className="text-white">{platform}</strong>.
               On completion, JSON saves to your Downloads folder (APK) or downloads
               automatically (web) for{" "}

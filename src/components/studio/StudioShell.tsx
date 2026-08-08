@@ -30,6 +30,7 @@ import { loadGltfTrialFile, releaseGltfUrl } from "@/lib/gltf-loader";
 import {
   clearDirtyFlag,
   findRestoreCandidate,
+  isRestorableSheetUrl,
   pushUndoEntry,
   saveProjectSnapshot,
   startAutosaveTimer,
@@ -152,14 +153,17 @@ export function StudioShell() {
 
   useEffect(() => {
     setViewMode(selected.mode);
-    setCustomSheetUrl(undefined);
+    setCustomSheetUrl((prev) => {
+      if (prev) releaseObjectUrl(prev);
+      return undefined;
+    });
     setTrialDurationMs(undefined);
     setSidecarClip(null);
     setGltfProxyInfo(null);
-    if (customGltfUrl) {
-      releaseGltfUrl(customGltfUrl);
-      setCustomGltfUrl(undefined);
-    }
+    setCustomGltfUrl((prev) => {
+      if (prev) releaseGltfUrl(prev);
+      return undefined;
+    });
     if (selected.sprite) {
       setSpriteTuning(
         applyPreset(DEFAULT_SPRITE_TUNING, {
@@ -208,6 +212,11 @@ export function StudioShell() {
     };
   }, []);
 
+  const trialRef = useRef(trial);
+  useEffect(() => {
+    trialRef.current = trial;
+  });
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (
@@ -218,17 +227,18 @@ export function StudioShell() {
       }
       if (event.key === " " || event.code === "Space") {
         event.preventDefault();
-        if (trial.status === "running") trial.pause();
-        else if (trial.status === "paused") trial.resume();
-        else if (trial.status === "idle" || trial.status === "complete") trial.play();
+        const { status, play, pause, resume } = trialRef.current;
+        if (status === "running") pause();
+        else if (status === "paused") resume();
+        else if (status === "idle" || status === "complete") play();
       }
       if (event.key === "Escape") {
-        trial.stop();
+        trialRef.current.stop();
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [trial]);
+  }, []);
 
   const playing = trial.status === "running";
 
@@ -247,7 +257,9 @@ export function StudioShell() {
     setSelected(scene);
     setViewMode(snapshot.viewMode);
     setReviewer(snapshot.reviewer);
-    setCustomSheetUrl(snapshot.customSheetUrl);
+    setCustomSheetUrl(
+      isRestorableSheetUrl(snapshot.customSheetUrl) ? snapshot.customSheetUrl : undefined,
+    );
     undoStackRef.current = snapshot.undoStack ?? [];
     setDirty(false);
     clearDirtyFlag();

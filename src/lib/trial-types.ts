@@ -16,6 +16,7 @@ export type SpriteAnimConfig = {
 
 export type TrialMetrics = {
   elapsedMs: number;
+  /** Trial timer RAF rate — not sprite animation FPS. */
   avgFps: number;
   minFps: number;
   frameDrops: number;
@@ -23,6 +24,8 @@ export type TrialMetrics = {
   platform: TrialPlatform;
   sceneId?: string;
   timestamp?: string;
+  /** `raf` = requestAnimationFrame timer samples (display refresh on high-Hz phones). */
+  fpsKind?: "raf";
 };
 
 export type BenchmarkRun = {
