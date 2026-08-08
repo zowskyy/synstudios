@@ -16,6 +16,7 @@
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android",
     "android:debug": "powershell -ExecutionPolicy Bypass -File scripts/build-debug-apk.ps1",
+    "android:debug:linux": "bash scripts/build-debug-apk.sh",
     "android:release": "powershell -ExecutionPolicy Bypass -File scripts/build-release-aab.ps1",
     "benchmark:compare": "python scripts/benchmark-compare.py",
     "taylor:playstore": "python scripts/taylor_playstore_team.py --mode production"
