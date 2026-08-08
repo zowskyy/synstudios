@@ -23,6 +23,7 @@ WORKERS = [
     "scripts/workers/w6_release_ops.py",
     "scripts/workers/w7_launch_continuity.py",
     "scripts/workers/w8_sprite_studio.py",
+    "scripts/workers/w9_unreal_viewport.py",
 ]
 
 

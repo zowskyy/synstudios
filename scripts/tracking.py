@@ -65,6 +65,7 @@ def gate(max_phase: int = 8) -> dict:
     checks["2.2_trial_player"] = check_file(
         "src/hooks/use-trial-player.ts", ["TRIAL_DURATION_MS", "requestAnimationFrame"]
     )
+    checks["2.3_unreal_viewport"] = run([PYTHON, "scripts/workers/w9_unreal_viewport.py"])
 
     checks["3.1_android"] = run([PYTHON, "scripts/workers/w5_android_validate.py"])
     checks["3.2_capacitor"] = check_file("capacitor.config.ts", ["com.synstudios.preview"])
@@ -91,7 +92,7 @@ def gate(max_phase: int = 8) -> dict:
     phase_map = {
         0: ["0.1_workers", "0.2_tracking_manifest", "0.3_frontier_relay"],
         1: ["1.1_sprite_tuning", "1.2_tuning_panel", "1.3_onion_skin"],
-        2: ["2.1_spec_parity", "2.2_trial_player"],
+        2: ["2.1_spec_parity", "2.2_trial_player", "2.3_unreal_viewport"],
         3: ["3.1_android", "3.2_capacitor"],
         4: ["4.1_benchmark", "4.2_downloads_save"],
         5: ["5.1_policy", "5.2_launch"],

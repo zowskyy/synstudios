@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScenePreview3D } from "@/components/studio/ScenePreview3D";
+import { SceneTuningPanel } from "@/components/studio/SceneTuningPanel";
 import { SpritePreview2D } from "@/components/studio/SpritePreview2D";
 import { SpriteTuningPanel } from "@/components/studio/SpriteTuningPanel";
 import { SpriteUpload } from "@/components/studio/SpriteUpload";
@@ -25,6 +26,10 @@ import {
   startAutosaveTimer,
   type RestoreCandidate,
 } from "@/lib/project-autosave";
+import {
+  DEFAULT_SCENE_TUNING,
+  type SceneTuning,
+} from "@/lib/scene-tuning";
 import {
   DEFAULT_SPRITE_TUNING,
   applyPreset,
@@ -46,6 +51,7 @@ export function StudioShell() {
   const [dirty, setDirty] = useState(false);
   const [restoreCandidate, setRestoreCandidate] = useState<RestoreCandidate | null>(null);
   const [spriteTuning, setSpriteTuning] = useState<SpriteTuning>(DEFAULT_SPRITE_TUNING);
+  const [sceneTuning, setSceneTuning] = useState<SceneTuning>(DEFAULT_SCENE_TUNING);
   const undoStackRef = useRef<string[]>([]);
 
   const tunedSprite = selected.sprite
@@ -357,6 +363,16 @@ export function StudioShell() {
               }}
             />
           ) : null}
+
+          {show3d(viewMode) ? (
+            <SceneTuningPanel
+              tuning={sceneTuning}
+              onChange={(next) => {
+                setSceneTuning(next);
+                setDirty(true);
+              }}
+            />
+          ) : null}
         </aside>
 
         <section className="space-y-4">
@@ -406,6 +422,7 @@ export function StudioShell() {
                   <ScenePreview3D
                     playing={playing}
                     elapsedMs={trial.elapsedMs}
+                    tuning={sceneTuning}
                     className="rounded-md border border-border bg-black p-2"
                   />
                 ) : null}

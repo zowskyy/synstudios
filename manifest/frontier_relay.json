@@ -21,12 +21,12 @@
       "frontier_file_hint": "scripts/tracking.py"
     },
     {
-      "id": "relay-0003",
-      "created_at": "2026-08-08T17:45:00Z",
-      "synstudios_feature": "Benchmark JSON direct Downloads save on Android",
-      "frontier_target": "Native self-host artifact export path",
-      "insight": "MediaStore Downloads write pattern validates on-device telemetry export without share sheet — applicable to Frontier benchmark manifests on Android host.",
-      "frontier_file_hint": "android/BenchmarkSavePlugin pattern"
+      "id": "relay-0004",
+      "created_at": "2026-08-08T17:55:00Z",
+      "synstudios_feature": "UE 5.8 viewport tuning — lit/unlit/wire, cine camera, sequencer speed, safe area",
+      "frontier_target": "Trial scene viewport metadata codegen + sequencer timing types",
+      "insight": "SceneTuning preset patches mirror UE view modes and playback rate; Frontier can serialize equivalent structs for wasm-hosted cinematic trials.",
+      "frontier_file_hint": "docs/UNREAL_VIEWPORT_MAP.md → frontier syntax scene module"
     }
   ]
 }

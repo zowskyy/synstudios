@@ -25,6 +25,7 @@ WAVE_CHECKS = {
     "wave_0_independent_validate": [PYTHON, "scripts/independent_validate.py"],
     "wave_0_taylor_playstore": [PYTHON, "scripts/taylor_playstore_team.py", "--mode", "production"],
     "wave_1_sprite_studio": [PYTHON, "scripts/workers/w8_sprite_studio.py"],
+    "wave_1_unreal_viewport": [PYTHON, "scripts/workers/w9_unreal_viewport.py"],
     "wave_2_android_debug_workflow": None,
     "wave_3_frontier_relay": None,
 }
