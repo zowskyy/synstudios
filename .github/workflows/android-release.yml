@@ -15,39 +15,43 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: synstudios/package.json
 
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
 
-      - name: Install dependencies
-        working-directory: synstudios
-        run: npm install
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Taylor Play Store workers (W1-W4, W6-W7)
-        working-directory: synstudios
+      - name: Install Android SDK packages
         run: |
-          python scripts/workers/w1_brand_audit.py
-          python scripts/workers/w4_feature_parity.py
-          python scripts/workers/w6_release_ops.py
-          python scripts/workers/w7_launch_continuity.py
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Taylor Play Store + asset workers
+        run: |
+          python3 scripts/workers/w1_brand_audit.py
+          python3 scripts/workers/w4_feature_parity.py
+          python3 scripts/workers/w6_release_ops.py
+          python3 scripts/workers/w7_launch_continuity.py
+          python3 scripts/taylor_asset_team.py
 
       - name: Build mobile static export
-        working-directory: synstudios
         run: npm run build:mobile
 
       - name: Capacitor sync
-        working-directory: synstudios
-        run: |
-          npx cap add android || true
-          npx cap sync android
+        run: npx cap sync android
 
       - name: Validate Android config
-        working-directory: synstudios
-        run: python scripts/workers/w5_android_validate.py
+        run: python3 scripts/workers/w5_android_validate.py
 
-      - name: Build debug AAB (CI validation)
-        working-directory: synstudios/android
+      - name: Build release AAB (CI validation)
+        working-directory: android
         run: ./gradlew bundleRelease
