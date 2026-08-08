@@ -24,6 +24,7 @@ export function SpriteUpload({ config, onUpload }: SpriteUploadProps) {
           type="file"
           accept="image/png,image/webp"
           className="hidden"
+          aria-label="Upload horizontal PNG sprite strip"
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file) return;
@@ -38,6 +39,7 @@ export function SpriteUpload({ config, onUpload }: SpriteUploadProps) {
             type="file"
             accept="image/png,image/webp"
             className="hidden"
+            aria-label="Choose PNG sprite strip file"
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;

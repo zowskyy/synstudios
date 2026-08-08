@@ -26,8 +26,8 @@ SynStudios does **not** require an account. The app may store locally on your de
 
 The Android app requests only what is needed for preview:
 
-- **Internet (optional):** for optional team sync when you enable live collaboration on the same network
-- **Storage / media read:** to load sprite sheet PNG files you select
+- **Internet (optional):** for optional team sync when you enable live collaboration on the same network (disabled in the native APK build)
+- **File access:** sprite sheets are loaded via the system file picker (SAF) in the WebView layer — no `READ_EXTERNAL_STORAGE` or `WRITE_EXTERNAL_STORAGE` permissions are declared
 
 ## Third-party services
 

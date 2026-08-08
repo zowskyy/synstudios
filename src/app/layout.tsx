@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { CapacitorInit } from "@/components/CapacitorInit";
 import "./globals.css";
 
@@ -7,6 +7,13 @@ export const metadata: Metadata = {
   description:
     "Preview 2D sprite sheets and 3D animation rigs in 30-second trial runs before full production commit.",
   icons: { icon: "/logo.svg" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({

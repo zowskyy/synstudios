@@ -62,7 +62,7 @@ export function ScenePreview3D({
 }: ScenePreview3DProps) {
   return (
     <div className={className}>
-      <div className="h-[280px] w-full overflow-hidden rounded-md border border-border bg-black">
+      <div className="h-[280px] w-full overflow-hidden rounded-md border border-border bg-black" role="img" aria-label="3D rig preview canvas">
         <Canvas gl={{ antialias: true, alpha: false }}>
           <color attach="background" args={["#000000"]} />
           <PerspectiveCamera makeDefault position={[2.4, 1.6, 2.8]} fov={45} />
