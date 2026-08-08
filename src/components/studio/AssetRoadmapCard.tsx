@@ -17,7 +17,7 @@ export function AssetRoadmapCard() {
       <CardContent className="space-y-2 text-xs text-muted-foreground">
         <p>
           Sprite strips up to <strong className="text-white">{formatBytes(ASSET_BUDGET.maxSpriteSheetBytes)}</strong> load
-          on-device. Heavier sheets auto-build an 8-frame proxy; Godot/UE exports use <strong className="text-white">trial.json</strong>.
+          on-device. Heavier sheets auto-build an 8-frame proxy; GLB meshes stream up to 12 MB in 3D mode.
         </p>
         <Link href="/assets" className="inline-block text-white underline underline-offset-2">
           Read asset import roadmap →

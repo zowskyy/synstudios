@@ -14,7 +14,7 @@ REQUIRED = [
     ("src/lib/asset-loader.ts", ["generateProxyStrip", "isProxy"]),
     ("store/EXPORT_TEMPLATES.md", ["trial.json", "Godot"]),
     ("src/components/studio/TrialSidecarImport.tsx", ["Import trial.json"]),
-    ("src/components/studio/GltfProxyPanel.tsx", ["glTF proxy header"]),
+    ("src/components/studio/GltfProxyPanel.tsx", ["glTF trial mesh"]),
     ("store/ASSET_IMPORT_ROADMAP.md", ["Phase 2 — Done"]),
 ]
 

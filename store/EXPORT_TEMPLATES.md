@@ -87,7 +87,7 @@ with open("trial.json", "w") as f:
     json.dump(trial, f, indent=2)
 ```
 
-3. Optional: export **glTF** proxy (low-poly) &lt; 12 MB — SynStudios reads header only for silhouette bounds.
+3. Optional: export **glTF** trial mesh (&lt; 12 MB, Draco if &gt;4 MB) — SynStudios streams with texture downscale.
 
 See `docs/UNREAL_VIEWPORT_MAP.md` for viewport tuning parity.
 

@@ -20,6 +20,7 @@ import { TrialControls } from "@/components/studio/TrialControls";
 import { TrialMetricsPanel } from "@/components/studio/TrialMetricsPanel";
 import { useTrialPlayer } from "@/hooks/use-trial-player";
 import { releaseObjectUrl } from "@/lib/asset-loader";
+import { releaseGltfUrl } from "@/lib/gltf-loader";
 import {
   clearDirtyFlag,
   findRestoreCandidate,
@@ -60,6 +61,7 @@ export function StudioShell() {
   const [trialDurationMs, setTrialDurationMs] = useState<number | undefined>();
   const [sidecarClip, setSidecarClip] = useState<string | null>(null);
   const [gltfProxyInfo, setGltfProxyInfo] = useState<GltfProxyInfo | null>(null);
+  const [customGltfUrl, setCustomGltfUrl] = useState<string | undefined>();
   const undoStackRef = useRef<string[]>([]);
 
   const effectiveDurationMs = trialDurationMs ?? selected.durationMs;
@@ -146,6 +148,10 @@ export function StudioShell() {
     setTrialDurationMs(undefined);
     setSidecarClip(null);
     setGltfProxyInfo(null);
+    if (customGltfUrl) {
+      releaseGltfUrl(customGltfUrl);
+      setCustomGltfUrl(undefined);
+    }
     if (selected.sprite) {
       setSpriteTuning(
         applyPreset(DEFAULT_SPRITE_TUNING, {
@@ -392,6 +398,8 @@ export function StudioShell() {
                       nodeCount: 0,
                       boneHint: sidecar.proxyGltf.boneCount ?? 0,
                       bounds: sidecar.proxyGltf.bounds,
+                      usesDraco: false,
+                      usesMeshopt: false,
                     });
                   }
                   setDirty(true);
@@ -422,7 +430,26 @@ export function StudioShell() {
                 setDirty(true);
               }}
               gltfProxyFooter={
-                <GltfProxyPanel info={gltfProxyInfo} onParsed={setGltfProxyInfo} />
+                <GltfProxyPanel
+                  info={gltfProxyInfo}
+                  gltfUrl={customGltfUrl}
+                  onParsed={setGltfProxyInfo}
+                  onLoaded={(result) => {
+                    if (customGltfUrl && result?.url !== customGltfUrl) {
+                      releaseGltfUrl(customGltfUrl);
+                    }
+                    if (!result) {
+                      releaseGltfUrl();
+                      setCustomGltfUrl(undefined);
+                      setDirty(true);
+                      return;
+                    }
+                    setCustomGltfUrl(result.url);
+                    setGltfProxyInfo(result.header);
+                    setDirty(true);
+                    persistSnapshot(true);
+                  }}
+                />
               }
             />
           ) : null}
@@ -478,6 +505,7 @@ export function StudioShell() {
                     playing={playing}
                     elapsedMs={trial.elapsedMs}
                     tuning={sceneTuning}
+                    gltfUrl={customGltfUrl}
                     className="rounded-md border border-border bg-black p-2"
                   />
                 ) : null}

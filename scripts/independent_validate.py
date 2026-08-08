@@ -26,6 +26,7 @@ WORKERS = [
     "scripts/workers/w9_unreal_viewport.py",
     "scripts/workers/w10_asset_roadmap.py",
     "scripts/workers/w11_proxy_preview.py",
+    "scripts/workers/w12_stream_gltf.py",
 ]
 
 

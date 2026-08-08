@@ -1,6 +1,6 @@
 {
   "mission": "taylor_asset_team",
-  "audited_at": "2026-08-08T18:17:33.511997+00:00",
+  "audited_at": "2026-08-08T18:32:00.775143+00:00",
   "all_pass": true,
   "workers": [
     {
@@ -20,7 +20,14 @@
     {
       "pass": true,
       "exit_code": 0,
-      "output": "PASS: export size 1.77MB, Android config valid",
+      "output": "PASS: Phase 3 streamed glTF trial + budget enforcement verified",
+      "command": "/usr/bin/python3 scripts/workers/w12_stream_gltf.py",
+      "worker": "W12_StreamGltf"
+    },
+    {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: export size 3.11MB, Android config valid",
       "command": "/usr/bin/python3 scripts/workers/w5_android_validate.py",
       "worker": "W5_BundleSizer"
     },
