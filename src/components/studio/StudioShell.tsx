@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
-import { isNativeApp } from "@/components/CapacitorInit";
+import { isNativeApp, registerLifecycleHandlers } from "@/components/CapacitorInit";
 import Image from "next/image";
 import { Film, Layers, MonitorPlay } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,14 @@ import { TrialControls } from "@/components/studio/TrialControls";
 import { TrialMetricsPanel } from "@/components/studio/TrialMetricsPanel";
 import { useTrialPlayer } from "@/hooks/use-trial-player";
 import {
+  clearDirtyFlag,
+  findRestoreCandidate,
+  pushUndoEntry,
+  saveProjectSnapshot,
+  startAutosaveTimer,
+  type RestoreCandidate,
+} from "@/lib/project-autosave";
+import {
   DEMO_SCENES,
   type PreviewMode,
   type TrialScene,
@@ -29,6 +37,9 @@ export function StudioShell() {
   const [connected, setConnected] = useState(false);
   const [reviewer, setReviewer] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [dirty, setDirty] = useState(false);
+  const [restoreCandidate, setRestoreCandidate] = useState<RestoreCandidate | null>(null);
+  const undoStackRef = useRef<string[]>([]);
 
   const trial = useTrialPlayer({
     mode: viewMode,
@@ -38,13 +49,64 @@ export function StudioShell() {
     durationMs: selected.durationMs,
     sceneId: selected.id,
     onComplete: (metrics) => {
-      socket?.emit("trial-complete", {
-        sceneId: selected.id,
-        reviewer: reviewer || "anonymous",
-        metrics,
-      });
+      if (socket?.connected) {
+        socket.emit("trial-complete", {
+          sceneId: selected.id,
+          reviewer: reviewer || "anonymous",
+          metrics,
+        });
+      }
     },
   });
+
+  const persistSnapshot = useCallback(
+    (markDirty: boolean) => {
+      saveProjectSnapshot({
+        version: 1,
+        savedAt: new Date().toISOString(),
+        sceneId: selected.id,
+        viewMode,
+        reviewer,
+        customSheetUrl,
+        dirty: markDirty,
+        undoStack: undoStackRef.current,
+      });
+    },
+    [customSheetUrl, reviewer, selected.id, viewMode],
+  );
+
+  useEffect(() => {
+    const candidate = findRestoreCandidate(DEMO_SCENES[0].id);
+    setRestoreCandidate(candidate);
+    if (candidate) {
+      undoStackRef.current = candidate.snapshot.undoStack ?? [];
+    }
+  }, []);
+
+  useEffect(() => {
+    const unregister = registerLifecycleHandlers({
+      onPause: () => {
+        if (dirty) persistSnapshot(true);
+      },
+      onResume: () => {
+        const candidate = findRestoreCandidate(selected.id);
+        setRestoreCandidate(candidate);
+      },
+    });
+    return unregister;
+  }, [dirty, persistSnapshot, selected.id]);
+
+  useEffect(() => {
+    const stopTimer = startAutosaveTimer(() => ({
+      sceneId: selected.id,
+      viewMode,
+      reviewer,
+      customSheetUrl,
+      dirty,
+      undoStack: undoStackRef.current,
+    }));
+    return stopTimer;
+  }, [customSheetUrl, dirty, reviewer, selected.id, viewMode]);
 
   useEffect(() => {
     setViewMode(selected.mode);
@@ -71,16 +133,70 @@ export function StudioShell() {
       },
     );
 
-    socketInstance.on("connect", () => setConnected(true));
-    socketInstance.on("disconnect", () => setConnected(false));
+    const onConnect = () => setConnected(true);
+    const onDisconnect = () => setConnected(false);
+
+    socketInstance.on("connect", onConnect);
+    socketInstance.on("disconnect", onDisconnect);
     setSocket(socketInstance);
 
     return () => {
+      socketInstance.off("connect", onConnect);
+      socketInstance.off("disconnect", onDisconnect);
       socketInstance.disconnect();
     };
   }, []);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+      if (event.key === " " || event.code === "Space") {
+        event.preventDefault();
+        if (trial.status === "running") trial.pause();
+        else if (trial.status === "paused") trial.resume();
+        else if (trial.status === "idle" || trial.status === "complete") trial.play();
+      }
+      if (event.key === "Escape") {
+        trial.stop();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [trial]);
+
   const playing = trial.status === "running";
+
+  function selectScene(scene: TrialScene) {
+    undoStackRef.current = pushUndoEntry(selected.id);
+    setSelected(scene);
+    setDirty(true);
+    persistSnapshot(true);
+  }
+
+  function applyRestore() {
+    if (!restoreCandidate) return;
+    const { snapshot } = restoreCandidate;
+    const scene =
+      DEMO_SCENES.find((s) => s.id === snapshot.sceneId) ?? DEMO_SCENES[0];
+    setSelected(scene);
+    setViewMode(snapshot.viewMode);
+    setReviewer(snapshot.reviewer);
+    setCustomSheetUrl(snapshot.customSheetUrl);
+    undoStackRef.current = snapshot.undoStack ?? [];
+    setDirty(false);
+    clearDirtyFlag();
+    setRestoreCandidate(null);
+  }
+
+  function dismissRestore() {
+    clearDirtyFlag();
+    setRestoreCandidate(null);
+  }
 
   function show2d(mode: PreviewMode) {
     return mode === "2d" || mode === "split";
@@ -91,7 +207,7 @@ export function StudioShell() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white safe-area-padding">
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3">
@@ -105,7 +221,9 @@ export function StudioShell() {
           </div>
           <div className="flex items-center gap-2">
             <Link href="/benchmark">
-              <Button variant="outline" size="sm">Benchmark</Button>
+              <Button variant="outline" size="sm" aria-label="Open benchmark page">
+                Benchmark
+              </Button>
             </Link>
             <Badge variant={connected ? "default" : "outline"}>
               {isNativeApp() ? "Offline mode" : connected ? "Live sync" : "Offline"}
@@ -114,21 +232,58 @@ export function StudioShell() {
         </div>
       </header>
 
+      {restoreCandidate ? (
+        <div className="border-b border-border bg-white/5 px-4 py-3" role="status">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
+            <p className="text-sm">
+              Recover unsaved work from{" "}
+              <span className="font-medium">{restoreCandidate.label}</span>
+              {restoreCandidate.snapshot.sceneId ? (
+                <>
+                  {" "}
+                  — scene{" "}
+                  <span className="font-mono">
+                    {restoreCandidate.snapshot.sceneId}
+                  </span>
+                </>
+              ) : null}
+              ?
+            </p>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={applyRestore} aria-label="Restore autosaved session">
+                Restore
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={dismissRestore}
+                aria-label="Discard autosaved session"
+              >
+                Discard
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <main className="mx-auto grid max-w-6xl gap-4 px-4 py-6 lg:grid-cols-[280px_1fr]">
         <aside className="space-y-3">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm">Trial scenes</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2" role="listbox" aria-label="Starter templates">
               {DEMO_SCENES.map((scene) => (
                 <button
                   key={scene.id}
                   type="button"
-                  onClick={() => setSelected(scene)}
-                  className={`w-full rounded-md border px-3 py-2 text-left text-sm transition-colors ${
+                  role="option"
+                  aria-selected={selected.id === scene.id}
+                  aria-label={`${scene.title}. ${scene.note ?? ""}`}
+                  onClick={() => selectScene(scene)}
+                  className={`min-h-12 w-full rounded-md border px-3 py-2 text-left text-sm transition-colors ${
                     selected.id === scene.id
-                      ? "border-white bg-white/10"
+                      ? "border-white bg-white/10 ring-1 ring-white"
                       : "border-border hover:bg-white/5"
                   }`}
                 >
@@ -146,13 +301,21 @@ export function StudioShell() {
             <CardContent className="space-y-4">
               <input
                 value={reviewer}
-                onChange={(e) => setReviewer(e.target.value)}
+                onChange={(e) => {
+                  setReviewer(e.target.value);
+                  setDirty(true);
+                }}
                 placeholder="Animator name"
-                className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                aria-label="Reviewer name"
+                className="min-h-12 w-full rounded-md border border-border bg-input px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
               <SpriteUpload
                 config={selected.sprite}
-                onUpload={(url) => setCustomSheetUrl(url)}
+                onUpload={(url) => {
+                  setCustomSheetUrl(url);
+                  setDirty(true);
+                  persistSnapshot(true);
+                }}
               />
             </CardContent>
           </Card>
@@ -164,19 +327,22 @@ export function StudioShell() {
               <CardTitle className="text-sm">{selected.title}</CardTitle>
               <Tabs
                 value={viewMode}
-                onValueChange={(v) => setViewMode(v as PreviewMode)}
+                onValueChange={(v) => {
+                  setViewMode(v as PreviewMode);
+                  setDirty(true);
+                }}
               >
-                <TabsList>
-                  <TabsTrigger value="2d">
-                    <MonitorPlay className="mr-1 h-3 w-3" />
+                <TabsList aria-label="Preview mode">
+                  <TabsTrigger value="2d" aria-label="2D preview mode">
+                    <MonitorPlay className="mr-1 h-3 w-3" aria-hidden />
                     2D
                   </TabsTrigger>
-                  <TabsTrigger value="3d">
-                    <Film className="mr-1 h-3 w-3" />
+                  <TabsTrigger value="3d" aria-label="3D preview mode">
+                    <Film className="mr-1 h-3 w-3" aria-hidden />
                     3D
                   </TabsTrigger>
-                  <TabsTrigger value="split">
-                    <Layers className="mr-1 h-3 w-3" />
+                  <TabsTrigger value="split" aria-label="Split 2D and 3D preview mode">
+                    <Layers className="mr-1 h-3 w-3" aria-hidden />
                     Split
                   </TabsTrigger>
                 </TabsList>
@@ -245,18 +411,21 @@ export function StudioShell() {
             <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
               <span>
                 Compatible with horizontal sprite strips (Godot AnimationLoader) and
-                glTF / procedural 3D rigs.
+                glTF / procedural 3D rigs. Space = play/pause · Esc = stop.
               </span>
               {!isNativeApp() ? (
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() =>
-                    socket?.emit("trial-start", {
+                  onClick={() => {
+                    if (!socket?.connected) return;
+                    socket.emit("trial-start", {
                       sceneId: selected.id,
                       reviewer: reviewer || "anonymous",
-                    })
-                  }
+                    });
+                  }}
+                  disabled={!connected}
+                  aria-label="Broadcast trial start to connected reviewers"
                 >
                   Broadcast trial start
                 </Button>

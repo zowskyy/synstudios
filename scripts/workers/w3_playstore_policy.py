@@ -12,6 +12,7 @@ REQUIRED = [
     "store/PLAY_STORE_LISTING.md",
     "store/SUBMISSION_CHECKLIST.md",
     "android/app/src/main/AndroidManifest.xml",
+    "android/app/src/main/res/xml/data_safety.xml",
     "android/app/build.gradle",
     "capacitor.config.ts",
     "public/logo.svg",
@@ -32,8 +33,9 @@ def main() -> int:
         return 1
 
     manifest = (ROOT / "android/app/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
-    if "com.synstudios.preview" not in manifest:
-        print("FAIL: AndroidManifest missing package com.synstudios.preview")
+    gradle = (ROOT / "android/app/build.gradle").read_text(encoding="utf-8")
+    if "com.synstudios.preview" not in manifest and "com.synstudios.preview" not in gradle:
+        print("FAIL: Android package com.synstudios.preview not found in manifest or build.gradle")
         return 1
 
     print("PASS: Play Store policy checklist complete")

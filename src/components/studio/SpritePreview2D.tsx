@@ -24,6 +24,7 @@ export function SpritePreview2D({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sheetRef = useRef<CanvasImageSource | null>(null);
   const frameCountRef = useRef(8);
+  const canvasSizeRef = useRef({ w: 0, h: 0 });
 
   const frameWidth = config?.frameWidth ?? 32;
   const frameHeight = config?.frameHeight ?? 48;
@@ -77,8 +78,11 @@ export function SpritePreview2D({
     const scale = 4;
     const w = frameWidth * scale + 32;
     const h = frameHeight * scale + 32;
-    canvas.width = w;
-    canvas.height = h;
+    if (canvasSizeRef.current.w !== w || canvasSizeRef.current.h !== h) {
+      canvas.width = w;
+      canvas.height = h;
+      canvasSizeRef.current = { w, h };
+    }
 
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, w, h);

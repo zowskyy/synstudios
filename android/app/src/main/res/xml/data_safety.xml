@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Play Console Data safety reference for SynStudios.
+  Matches store/PRIVACY_POLICY.md — no analytics SDKs, no account system.
+-->
+<data-safety>
+    <collection>
+        <data-type name="app_performance" collected="false" shared="false" />
+        <data-type name="device_or_other_ids" collected="false" shared="false" />
+        <data-type name="location" collected="false" shared="false" />
+        <data-type name="personal_info" collected="false" shared="false" />
+        <data-type name="photos_and_videos" collected="false" shared="false" />
+    </collection>
+    <local-only>
+        <item>optional reviewer name typed by user</item>
+        <item>trial FPS metrics during 30s preview runs</item>
+        <item>sprite sheet files selected via file picker (processed on-device)</item>
+    </local-only>
+    <optional-network>
+        <item>Socket.io trial events when live sync enabled on web (disabled in native APK)</item>
+    </optional-network>
+</data-safety>
