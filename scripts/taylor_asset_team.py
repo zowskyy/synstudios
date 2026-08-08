@@ -22,6 +22,9 @@ WORKERS = [
     ("W10_AssetRoadmap", [PYTHON, "scripts/workers/w10_asset_roadmap.py"]),
     ("W11_ProxyPreview", [PYTHON, "scripts/workers/w11_proxy_preview.py"]),
     ("W12_StreamGltf", [PYTHON, "scripts/workers/w12_stream_gltf.py"]),
+    ("W13_ProjectFolder", [PYTHON, "scripts/workers/w13_project_folder.py"]),
+    ("W14_CloudTranscode", [PYTHON, "scripts/workers/w14_cloud_transcode.py"]),
+    ("W15_FrontierBridge", [PYTHON, "scripts/workers/w15_frontier_bridge.py"]),
     ("W5_BundleSizer", [PYTHON, "scripts/workers/w5_android_validate.py"]),
     ("W8_SpriteStudio", [PYTHON, "scripts/workers/w8_sprite_studio.py"]),
 ]

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { FileStack } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ASSET_BUDGET, formatBytes } from "@/lib/asset-budget";
 
 export function AssetRoadmapCard() {
   return (
@@ -16,8 +15,8 @@ export function AssetRoadmapCard() {
       </CardHeader>
       <CardContent className="space-y-2 text-xs text-muted-foreground">
         <p>
-          Sprite strips up to <strong className="text-white">{formatBytes(ASSET_BUDGET.maxSpriteSheetBytes)}</strong> load
-          on-device. Heavier sheets auto-build an 8-frame proxy; GLB meshes stream up to 12 MB in 3D mode.
+          Sprite strips and GLB meshes load on-device with strict budgets. Open a project folder,
+          build a trial pack, or export Frontier metadata from the studio sidebar.
         </p>
         <Link href="/assets" className="inline-block text-white underline underline-offset-2">
           Read asset import roadmap →

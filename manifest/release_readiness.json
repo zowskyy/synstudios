@@ -6,13 +6,13 @@
   "ga_ready": true,
   "blockers": [],
   "rc_blockers": [],
-  "audited_at": "2026-08-08T18:31:57.263970Z",
+  "audited_at": "2026-08-08T18:45:10.638350Z",
   "checks": [
     {
       "name": "wave_0_tracking_gate",
       "pass": true,
       "skipped": true,
-      "output": "{\"all_pass\": true, \"max_phase\": 8, \"phase_0_pass\": true, \"phase_1_pass\": true, \"phase_2_pass\": true, \"phase_3_pass\": true, \"phase_4_pass\": true, \"phase_5_pass\": true, \"phase_6_pass\": true, \"phase_7_pass\": true, \"phase_8_pass\": true, \"checks\": {\"0.1_workers\": {\"pass\": true, \"exit_code\": 0, \"output\": \"py: PASS: SynStudios brand audit \\u2014 no forbidden names or secrets\\n[PASS] scripts/workers/w2_we"
+      "output": "{\"all_pass\": true, \"max_phase\": 8, \"phase_0_pass\": true, \"phase_1_pass\": true, \"phase_2_pass\": true, \"phase_3_pass\": true, \"phase_4_pass\": true, \"phase_5_pass\": true, \"phase_6_pass\": true, \"phase_7_pass\": true, \"phase_8_pass\": true, \"checks\": {\"0.1_workers\": {\"pass\": true, \"exit_code\": 0, \"output\": \"feature parity verified\\n[PASS] scripts/workers/w5_android_validate.py: PASS: export size 3.12MB, A"
     },
     {
       "name": "wave_0_independent_validate",

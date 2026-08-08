@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "exportedAt": "2026-08-08T18:45:01.615654Z",
+  "durationMs": 30000,
+  "clipName": "hero-walk-2d",
+  "strip": {
+    "layout": "horizontal",
+    "frameWidth": 32,
+    "frameHeight": 48,
+    "fps": 12,
+    "loop": true
+  },
+  "scene": {
+    "viewportMode": "lit",
+    "playbackRate": 1,
+    "fov": 50
+  }
+}
