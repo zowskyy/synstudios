@@ -1,6 +1,6 @@
 {
   "name": "synstudios",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "private": true,
   "description": "SynStudios — 2D sprite and 3D animation trial preview studio",
   "scripts": {

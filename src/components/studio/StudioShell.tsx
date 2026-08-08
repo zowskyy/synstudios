@@ -10,6 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AssetRoadmapCard } from "@/components/studio/AssetRoadmapCard";
+import { CloudTranscodePanel } from "@/components/studio/CloudTranscodePanel";
+import { FrontierExportPanel } from "@/components/studio/FrontierExportPanel";
+import {
+  ProjectFolderPanel,
+  type ProjectClipSelection,
+} from "@/components/studio/ProjectFolderPanel";
 import { SceneTuningPanel } from "@/components/studio/SceneTuningPanel";
 import { SpritePreview2D } from "@/components/studio/SpritePreview2D";
 import { SpriteTuningPanel } from "@/components/studio/SpriteTuningPanel";
@@ -19,8 +25,8 @@ import { TrialSidecarImport } from "@/components/studio/TrialSidecarImport";
 import { TrialControls } from "@/components/studio/TrialControls";
 import { TrialMetricsPanel } from "@/components/studio/TrialMetricsPanel";
 import { useTrialPlayer } from "@/hooks/use-trial-player";
-import { releaseObjectUrl } from "@/lib/asset-loader";
-import { releaseGltfUrl } from "@/lib/gltf-loader";
+import { loadSpriteSheetFile, releaseObjectUrl } from "@/lib/asset-loader";
+import { loadGltfTrialFile, releaseGltfUrl } from "@/lib/gltf-loader";
 import {
   clearDirtyFlag,
   findRestoreCandidate,
@@ -40,7 +46,9 @@ import {
   type SpriteTuning,
 } from "@/lib/sprite-tuning";
 import type { GltfProxyInfo } from "@/lib/gltf-proxy";
-import { sidecarToSpriteConfig, type TrialSidecar } from "@/lib/trial-sidecar";
+import { sidecarToSpriteConfig, parseTrialSidecar, type TrialSidecar } from "@/lib/trial-sidecar";
+import { trialPackToHints } from "@/lib/trial-pack-apply";
+import type { TrialPack } from "@/lib/trial-pack";
 import {
   DEMO_SCENES,
   type PreviewMode,
@@ -178,6 +186,7 @@ export function StudioShell() {
         ? `${window.location.protocol}//${window.location.hostname}:3003`
         : "/",
       {
+        path: "/socket.io/",
         transports: ["websocket", "polling"],
         reconnection: true,
         reconnectionAttempts: 3,
@@ -256,6 +265,78 @@ export function StudioShell() {
 
   function show3d(mode: PreviewMode) {
     return mode === "3d" || mode === "split";
+  }
+
+  async function handleProjectClip({ entry, file }: ProjectClipSelection) {
+    setSidecarClip(entry.name);
+    if (entry.kind === "sprite") {
+      const result = await loadSpriteSheetFile(file);
+      if (!result.ok) return;
+      if (customSheetUrl && customSheetUrl !== result.url) releaseObjectUrl(customSheetUrl);
+      setCustomSheetUrl(result.url);
+      if (result.isProxy && result.frameWidth && result.frameHeight) {
+        setSpriteTuning((prev) =>
+          applyPreset(prev, {
+            frameWidth: result.frameWidth,
+            frameHeight: result.frameHeight,
+          }),
+        );
+      }
+      if (viewMode === "3d") setViewMode("split");
+    } else if (entry.kind === "gltf") {
+      const result = await loadGltfTrialFile(file);
+      if (!result.ok) return;
+      if (customGltfUrl && customGltfUrl !== result.url) releaseGltfUrl(customGltfUrl);
+      setCustomGltfUrl(result.url);
+      setGltfProxyInfo(result.header);
+      if (viewMode === "2d") setViewMode("split");
+    } else if (entry.kind === "sidecar") {
+      const parsed = parseTrialSidecar(await file.text());
+      if (!parsed.ok) return;
+      const sprite = sidecarToSpriteConfig(parsed.sidecar);
+      setSpriteTuning((prev) =>
+        applyPreset(prev, {
+          frameWidth: sprite.frameWidth,
+          frameHeight: sprite.frameHeight,
+          fps: sprite.fps,
+          loop: sprite.loop,
+          sheetLayout: parsed.sidecar.strip?.layout ?? prev.sheetLayout,
+        }),
+      );
+      setTrialDurationMs(parsed.sidecar.durationMs);
+    }
+    setDirty(true);
+    persistSnapshot(true);
+  }
+
+  function applyTrialPack(pack: TrialPack) {
+    const hints = trialPackToHints(pack);
+    setSidecarClip(hints.sidecarClip ?? pack.clipName);
+    if (hints.trialDurationMs) setTrialDurationMs(hints.trialDurationMs);
+    if (hints.customSheetUrl) {
+      if (customSheetUrl && customSheetUrl !== hints.customSheetUrl) {
+        releaseObjectUrl(customSheetUrl);
+      }
+      setCustomSheetUrl(hints.customSheetUrl);
+    }
+    if (hints.spriteFrameWidth || hints.spriteFrameHeight || hints.spriteFps) {
+      setSpriteTuning((prev) =>
+        applyPreset(prev, {
+          frameWidth: hints.spriteFrameWidth ?? prev.frameWidth,
+          frameHeight: hints.spriteFrameHeight ?? prev.frameHeight,
+          fps: hints.spriteFps ?? prev.fps,
+        }),
+      );
+    }
+    if (pack.sidecar) {
+      setSpriteTuning((prev) =>
+        applyPreset(prev, {
+          sheetLayout: pack.sidecar?.strip?.layout ?? prev.sheetLayout,
+        }),
+      );
+    }
+    setDirty(true);
+    persistSnapshot(true);
   }
 
   return (
@@ -410,6 +491,18 @@ export function StudioShell() {
           </Card>
 
           <AssetRoadmapCard />
+
+          <ProjectFolderPanel onSelectClip={(clip) => void handleProjectClip(clip)} />
+
+          <CloudTranscodePanel onPack={applyTrialPack} />
+
+          <FrontierExportPanel
+            durationMs={effectiveDurationMs}
+            spriteTuning={spriteTuning}
+            sceneTuning={sceneTuning}
+            customGltfUrl={customGltfUrl}
+            clipName={sidecarClip ?? selected.title}
+          />
 
           {show2d(viewMode) ? (
             <SpriteTuningPanel

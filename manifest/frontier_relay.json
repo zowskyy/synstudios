@@ -59,6 +59,14 @@
       "frontier_target": "TrialPack glTF stream module + Draco decode hook",
       "insight": "12 MB cap, 8 mesh max, Draco/meshopt >4 MB, 2048 texture downscale; CDN Draco WASM keeps APK lean",
       "frontier_file_hint": "src/lib/gltf-loader.ts"
+    },
+    {
+      "id": "relay-0008",
+      "created_at": "2026-08-08T18:45:01.640347Z",
+      "synstudios_feature": "Asset import roadmap complete \u2014 phases 4\u20136 (folder, cloud, Frontier)",
+      "frontier_target": "TrialPack v1 full pipeline + wasm codegen export",
+      "insight": "Project folder lazy index, opt-in cloud trial pack with offline fallback, frontier-trial.json export for Frontier Syntax structs",
+      "frontier_file_hint": "src/lib/frontier-trial-pack.ts"
     }
   ]
 }

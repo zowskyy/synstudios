@@ -16,30 +16,33 @@ export default function AssetsRoadmapPage() {
         <h1 className="text-xl font-semibold">Lightweight asset import</h1>
         <p className="text-muted-foreground">
           SynStudios previews your animation without loading full game engine assets into memory.
+          <strong className="text-white"> All six roadmap phases are complete.</strong>
         </p>
         <section className="space-y-3 text-sm">
-          <h2 className="text-base font-medium text-white">Phase 1 — Now</h2>
+          <h2 className="text-base font-medium text-white">Phase 1 — Sprite upload</h2>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
             <li>PNG/WebP sprite strips with size caps and LRU cache</li>
             <li>Procedural 3D rig for zero-cost trials</li>
           </ul>
           <h2 className="text-base font-medium text-white">Phase 2 — Proxy preview</h2>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-            <li>Auto thumbnail strip from heavy sources</li>
-            <li>glTF header-only silhouette (bones + bounds)</li>
-            <li>Godot/UE sidecar JSON (timing without meshes)</li>
+            <li>Auto thumbnail strip, glTF header parse, trial.json sidecar</li>
           </ul>
           <h2 className="text-base font-medium text-white">Phase 3 — Streamed glTF</h2>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-            <li>12 MB cap, Draco compression, 2048² texture downscale</li>
+            <li>12 MB cap, Draco/meshopt, 2048² texture downscale</li>
           </ul>
-          <h2 className="text-base font-medium text-white">Phase 4 — Project folder link</h2>
+          <h2 className="text-base font-medium text-white">Phase 4 — Project folder</h2>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-            <li>SAF / directory picker — lazy load one clip at a time</li>
+            <li>Directory picker — index filenames, lazy-load one clip</li>
           </ul>
-          <h2 className="text-base font-medium text-white">Phase 5 — Optional cloud transcode</h2>
+          <h2 className="text-base font-medium text-white">Phase 5 — Cloud transcode</h2>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-            <li>Server returns &lt;2 MB trial pack; app stays offline-first</li>
+            <li>Optional opt-in trial pack; offline proxy fallback</li>
+          </ul>
+          <h2 className="text-base font-medium text-white">Phase 6 — Frontier bridge</h2>
+          <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
+            <li>Export frontier-trial.json for wasm codegen</li>
           </ul>
         </section>
         <AssetRoadmapCard />

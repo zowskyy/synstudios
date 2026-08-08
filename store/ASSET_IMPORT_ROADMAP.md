@@ -50,34 +50,37 @@
 
 ---
 
-## Phase 4 — Project folder link (next)
+## Phase 4 — Done (project folder link)
 
 **Goal:** “Open project folder” instead of importing everything.
 
-| Platform | API |
-|----------|-----|
-| Android | Storage Access Framework — read-only URI to `Animations/` subfolder |
-| Web (desktop) | `showDirectoryPicker()` — index filenames only, lazy-load selected clip |
-| iOS (future) | Document picker single-file |
+| Platform | Status |
+|----------|--------|
+| Web desktop `showDirectoryPicker()` | ✅ `project-folder-picker.ts` |
+| Android / Chrome folder select (`webkitdirectory`) | ✅ fallback in picker |
+| Lazy load one clip | ✅ `ProjectFolderPanel` + `project-folder-store.ts` |
 
-**Memory:** Only the **active trial clip** is decoded; index is a JSON manifest (&lt;10 KB).
+**Memory:** Filename index manifest only (&lt;10 KB); active clip decoded on demand.
 
----
-
-## Phase 5 — Cloud transcode lane (optional, zero device RAM)
-
-**Goal:** Heavy UE/Godot export uploads once; server returns **trial package** (&lt;2 MB).
-
-| Output | Contents |
-|--------|----------|
-| `trial-pack.zip` | Downscaled strip + 512² glTF proxy + 30s metadata JSON |
-| Privacy | User opts in; deleted after 24h; no account required for v1 |
-
-**SynStudios stays offline-first;** cloud is optional accelerator.
+**Taylor:** W13 ProjectFolder validates this phase.
 
 ---
 
-## Phase 6 — Frontier Syntax bridge
+## Phase 5 — Done (optional cloud transcode)
+
+**Goal:** Heavy export uploads once; server returns **trial package** (&lt;2 MB metadata).
+
+| Item | Status |
+|------|--------|
+| Opt-in UI + 24h TTL schema | ✅ `CloudTranscodePanel` + `trial-pack.ts` |
+| Cloud stub endpoint | ✅ `server.ts` `/api/transcode` |
+| Offline-first fallback | ✅ `buildLocalTrialPack()` on-device proxy |
+
+**Taylor:** W14 CloudTranscode validates this phase.
+
+---
+
+## Phase 6 — Done (Frontier Syntax bridge)
 
 Export trial metadata as Frontier-readable structs for wasm codegen:
 
@@ -89,9 +92,21 @@ Export trial metadata as Frontier-readable structs for wasm codegen:
 }
 ```
 
+| Item | Status |
+|------|--------|
+| `toFrontierTrialPack()` export | ✅ `frontier-trial-pack.ts` |
+| Studio download button | ✅ `FrontierExportPanel` |
+| CLI sample export | ✅ `scripts/frontier_trial_export.py` |
+
 Relay: `manifest/frontier_relay.json` — see `scripts/frontier_relay.py append`.
 
+**Taylor:** W15 FrontierBridge validates this phase.
+
 ---
+
+## Roadmap complete
+
+All six asset-import phases are implemented. Future work is production hardening (real cloud transcode pipeline, iOS folder picker, meshopt decoder).
 
 ## Memory budget summary (enforced in app)
 
@@ -121,5 +136,8 @@ Relay: `manifest/frontier_relay.json` — see `scripts/frontier_relay.py append`
 | W10 AssetRoadmap | Roadmap doc + budget modules present |
 | W11 ProxyPreview | Phase 2 thumbnail + sidecar + glTF header validation |
 | W12 StreamGltf | Phase 3 glTF budget + streamed preview |
+| W13 ProjectFolder | Phase 4 directory index + lazy clip load |
+| W14 CloudTranscode | Phase 5 cloud trial pack + offline fallback |
+| W15 FrontierBridge | Phase 6 Frontier Syntax export bridge |
 
 Run: `python3 scripts/taylor_asset_team.py`

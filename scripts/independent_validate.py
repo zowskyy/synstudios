@@ -27,6 +27,9 @@ WORKERS = [
     "scripts/workers/w10_asset_roadmap.py",
     "scripts/workers/w11_proxy_preview.py",
     "scripts/workers/w12_stream_gltf.py",
+    "scripts/workers/w13_project_folder.py",
+    "scripts/workers/w14_cloud_transcode.py",
+    "scripts/workers/w15_frontier_bridge.py",
 ]
 
 

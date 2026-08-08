@@ -1,6 +1,6 @@
 {
   "mission": "taylor_asset_team",
-  "audited_at": "2026-08-08T18:32:00.775143+00:00",
+  "audited_at": "2026-08-08T18:45:14.285013+00:00",
   "all_pass": true,
   "workers": [
     {
@@ -27,7 +27,28 @@
     {
       "pass": true,
       "exit_code": 0,
-      "output": "PASS: export size 3.11MB, Android config valid",
+      "output": "PASS: Phase 4 project folder link + lazy clip load verified",
+      "command": "/usr/bin/python3 scripts/workers/w13_project_folder.py",
+      "worker": "W13_ProjectFolder"
+    },
+    {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: Phase 5 cloud transcode lane + offline fallback verified",
+      "command": "/usr/bin/python3 scripts/workers/w14_cloud_transcode.py",
+      "worker": "W14_CloudTranscode"
+    },
+    {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: Phase 6 Frontier Syntax trial pack bridge verified",
+      "command": "/usr/bin/python3 scripts/workers/w15_frontier_bridge.py",
+      "worker": "W15_FrontierBridge"
+    },
+    {
+      "pass": true,
+      "exit_code": 0,
+      "output": "PASS: export size 3.12MB, Android config valid",
       "command": "/usr/bin/python3 scripts/workers/w5_android_validate.py",
       "worker": "W5_BundleSizer"
     },
