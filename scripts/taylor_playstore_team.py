@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SynStudios Taylor Play Store Team — 9-worker orchestrator for Google Play release.
+SynStudios Taylor Play Store Team — 10-worker orchestrator for Google Play release.
 
 Group 1 FOUNDATION (sequential):
   W1 GateKeeper     → brand + secrets audit
@@ -87,11 +87,11 @@ WORKERS: dict[str, dict[str, Any]] = {
         "commands": [[PYTHON, "scripts/workers/w7_launch_continuity.py"]],
         "allow_nonzero": False,
     },
-    "W9_UnrealViewport": {
-        "group": 2,
-        "name": "UnrealViewport",
-        "role": "UE 5.8 viewport tuning parity for 3D preview",
-        "commands": [[PYTHON, "scripts/workers/w9_unreal_viewport.py"]],
+    "W10_AssetRoadmap": {
+        "group": 3,
+        "name": "AssetRoadmap",
+        "role": "Lightweight asset import roadmap + budget enforcement",
+        "commands": [[PYTHON, "scripts/workers/w10_asset_roadmap.py"]],
         "allow_nonzero": False,
     },
 }
@@ -99,7 +99,7 @@ WORKERS: dict[str, dict[str, Any]] = {
 GROUPS = {
     1: {"name": "FOUNDATION", "workers": ["W1_GateKeeper", "W2_BuildCore", "W3_AuditGuardian"], "sequential": True},
     2: {"name": "BUILD", "workers": ["W4_SpecParity", "W5_BundleSizer", "W8_SpriteStudio", "W9_UnrealViewport"], "sequential": False},
-    3: {"name": "SHIP", "workers": ["W6_ReleaseOps", "W7_LaunchContinuity"], "sequential": False},
+    3: {"name": "SHIP", "workers": ["W6_ReleaseOps", "W7_LaunchContinuity", "W10_AssetRoadmap"], "sequential": False},
 }
 
 

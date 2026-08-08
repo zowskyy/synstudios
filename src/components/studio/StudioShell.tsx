@@ -4,13 +4,12 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 import { isNativeApp, registerLifecycleHandlers } from "@/components/CapacitorInit";
-import Image from "next/image";
 import { Film, Layers, MonitorPlay } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScenePreview3D } from "@/components/studio/ScenePreview3D";
+import { AssetRoadmapCard } from "@/components/studio/AssetRoadmapCard";
 import { SceneTuningPanel } from "@/components/studio/SceneTuningPanel";
 import { SpritePreview2D } from "@/components/studio/SpritePreview2D";
 import { SpriteTuningPanel } from "@/components/studio/SpriteTuningPanel";
@@ -18,6 +17,7 @@ import { SpriteUpload } from "@/components/studio/SpriteUpload";
 import { TrialControls } from "@/components/studio/TrialControls";
 import { TrialMetricsPanel } from "@/components/studio/TrialMetricsPanel";
 import { useTrialPlayer } from "@/hooks/use-trial-player";
+import { releaseObjectUrl } from "@/lib/asset-loader";
 import {
   clearDirtyFlag,
   findRestoreCandidate,
@@ -26,6 +26,7 @@ import {
   startAutosaveTimer,
   type RestoreCandidate,
 } from "@/lib/project-autosave";
+import { ScenePreview3D } from "@/components/studio/ScenePreview3D";
 import {
   DEFAULT_SCENE_TUNING,
   type SceneTuning,
@@ -243,14 +244,11 @@ export function StudioShell() {
     <div className="min-h-screen bg-black text-white safe-area-padding">
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="SynStudios" width={32} height={32} />
-            <div>
-              <h1 className="text-lg font-semibold tracking-tight">SynStudios</h1>
-              <p className="text-xs text-muted-foreground">
-                2D sprite · 3D animation trial studio
-              </p>
-            </div>
+          <div>
+            <h1 className="text-lg font-semibold tracking-tight">SynStudios</h1>
+            <p className="text-xs text-muted-foreground">
+              2D sprite · 3D animation trial studio
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/benchmark">
@@ -344,14 +342,20 @@ export function StudioShell() {
               />
               <SpriteUpload
                 config={tunedSprite ?? selected.sprite}
-                onUpload={(url) => {
+                onUpload={(url, fileName) => {
+                  if (customSheetUrl && customSheetUrl !== url) {
+                    releaseObjectUrl(customSheetUrl);
+                  }
                   setCustomSheetUrl(url);
                   setDirty(true);
                   persistSnapshot(true);
+                  void fileName;
                 }}
               />
             </CardContent>
           </Card>
+
+          <AssetRoadmapCard />
 
           {show2d(viewMode) ? (
             <SpriteTuningPanel

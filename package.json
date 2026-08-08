@@ -19,7 +19,8 @@
     "android:debug:linux": "bash scripts/build-debug-apk.sh",
     "android:release": "powershell -ExecutionPolicy Bypass -File scripts/build-release-aab.ps1",
     "benchmark:compare": "python scripts/benchmark-compare.py",
-    "taylor:playstore": "python scripts/taylor_playstore_team.py --mode production"
+    "taylor:playstore": "python scripts/taylor_playstore_team.py --mode production",
+    "taylor:asset": "python3 scripts/taylor_asset_team.py"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",

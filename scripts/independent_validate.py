@@ -24,6 +24,7 @@ WORKERS = [
     "scripts/workers/w7_launch_continuity.py",
     "scripts/workers/w8_sprite_studio.py",
     "scripts/workers/w9_unreal_viewport.py",
+    "scripts/workers/w10_asset_roadmap.py",
 ]
 
 
