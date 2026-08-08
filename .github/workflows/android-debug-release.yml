@@ -1,0 +1,92 @@
+name: SynStudios Debug APK Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "android/**"
+      - "capacitor.config.ts"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/build-debug-apk.sh"
+      - ".github/workflows/android-debug-release.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-debug-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build mobile static export
+        run: npm run build:mobile
+
+      - name: Capacitor sync
+        run: npx cap sync android
+
+      - name: Validate Android config
+        run: python3 scripts/workers/w5_android_validate.py
+
+      - name: Build debug APK
+        run: bash scripts/build-debug-apk.sh
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=debug-v${VERSION}-${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: SynStudios Debug APK v${{ steps.version.outputs.version }} (build ${{ github.run_number }})
+          body: |
+            ## SynStudios debug APK
+
+            Install on a device or emulator for on-device testing.
+
+            ```bash
+            adb install -r synstudios-debug.apk
+            ```
+
+            Built from commit `${{ github.sha }}` on `${{ github.ref_name }}`.
+
+            ### What's included
+            - 2D sprite + 3D trial studio
+            - 30s trial player with FPS metrics
+            - `/benchmark` page for web vs APK comparison
+            - Offline native mode (no live sync server required)
+          files: dist/synstudios-debug.apk
+          draft: false
+          prerelease: true
+          generate_release_notes: true
