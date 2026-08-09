@@ -24,6 +24,16 @@ def main() -> int:
         print("FAIL: npm not found — install Node.js LTS")
         return 1
 
+    # Clear stale Next.js build lock from interrupted prior runs
+    lock_file = ROOT / ".next" / "lock"
+    if lock_file.exists():
+        try:
+            lock_file.unlink()
+            print(f"WARN: removed stale build lock at {lock_file}")
+        except OSError as exc:
+            print(f"FAIL: could not remove stale build lock: {exc}")
+            return 1
+
     if not (ROOT / "node_modules").exists():
         if run([NPM, "install"]) != 0:
             print("FAIL: npm install")

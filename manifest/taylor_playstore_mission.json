@@ -1,8 +1,8 @@
 {
-  "run_id": "20260808T184514Z",
+  "run_id": "20260809T003718Z",
   "mode": "production",
-  "started_at": "2026-08-08T18:45:10.672978+00:00",
-  "finished_at": "2026-08-08T18:45:14.119536+00:00",
+  "started_at": "2026-08-09T00:37:14.856772+00:00",
+  "finished_at": "2026-08-09T00:37:18.289872+00:00",
   "workers": [
     {
       "id": "W1_GateKeeper",
@@ -14,14 +14,14 @@
           "command": "/usr/bin/python3 scripts/workers/w1_brand_audit.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 1.898,
+          "duration_s": 1.911,
           "stdout_tail": "PASS: SynStudios brand audit \u2014 no forbidden names or secrets\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:10.672978+00:00",
-      "finished_at": "2026-08-08T18:45:12.570851+00:00"
+      "started_at": "2026-08-09T00:37:14.856772+00:00",
+      "finished_at": "2026-08-09T00:37:16.767677+00:00"
     },
     {
       "id": "W2_BuildCore",
@@ -33,14 +33,14 @@
           "command": "/usr/bin/python3 scripts/workers/w2_web_build.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 1.487,
-          "stdout_tail": "\n> synstudios@1.1.0 build:mobile\n> cross-env MOBILE_EXPORT=1 next build\n\n\u25b2 Next.js 16.3.0 (Turbopack)\n\u2713 Running next.config.ts took 19ms\n\n  Creating an optimized production build ...\n\u2713 Compiled successfully in 393ms\n  Skipping validation of types\n  Finished TypeScript config validation in 3ms ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/5) ...\n  Generating static pages using 3 workers (1/5) \n  Generating static pages using 3 workers (2/5) \n  Generating static pages using 3 workers (3/5) \n\u2713 Generating static pages using 3 workers (5/5) in 176ms\n  Finalizing page optimization ...\n\nRoute (app)\n\u250c \u25cb /\n\u251c \u25cb /_not-found\n\u251c \u25cb /assets\n\u2514 \u25cb /benchmark\n\n\n\u25cb  (Static)  prerendered as static content\n\nPASS: static export at /workspace/out (59 files)\n",
+          "duration_s": 1.458,
+          "stdout_tail": "\n> synstudios@1.1.0 build:mobile\n> cross-env MOBILE_EXPORT=1 next build\n\n\u25b2 Next.js 16.3.0 (Turbopack)\n\u2713 Running next.config.ts took 18ms\n\n  Creating an optimized production build ...\n\u2713 Compiled successfully in 380ms\n  Skipping validation of types\n  Finished TypeScript config validation in 3ms ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/5) ...\n  Generating static pages using 3 workers (1/5) \n  Generating static pages using 3 workers (2/5) \n  Generating static pages using 3 workers (3/5) \n\u2713 Generating static pages using 3 workers (5/5) in 173ms\n  Finalizing page optimization ...\n\nRoute (app)\n\u250c \u25cb /\n\u251c \u25cb /_not-found\n\u251c \u25cb /assets\n\u2514 \u25cb /benchmark\n\n\n\u25cb  (Static)  prerendered as static content\n\nPASS: static export at /workspace/out (59 files)\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:12.570882+00:00",
-      "finished_at": "2026-08-08T18:45:14.057704+00:00"
+      "started_at": "2026-08-09T00:37:16.767699+00:00",
+      "finished_at": "2026-08-09T00:37:18.225638+00:00"
     },
     {
       "id": "W3_AuditGuardian",
@@ -52,14 +52,14 @@
           "command": "/usr/bin/python3 scripts/workers/w3_playstore_policy.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 0.021,
+          "duration_s": 0.02,
           "stdout_tail": "PASS: Play Store policy checklist complete\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:14.057723+00:00",
-      "finished_at": "2026-08-08T18:45:14.078816+00:00"
+      "started_at": "2026-08-09T00:37:18.225661+00:00",
+      "finished_at": "2026-08-09T00:37:18.245941+00:00"
     },
     {
       "id": "W4_SpecParity",
@@ -71,14 +71,14 @@
           "command": "/usr/bin/python3 scripts/workers/w4_feature_parity.py",
           "exit_code": 0,
           "pass": true,
-          "duration_s": 0.018,
+          "duration_s": 0.019,
           "stdout_tail": "PASS: 2D sprite + 3D animation feature parity verified\n",
           "stderr_tail": ""
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:14.079407+00:00",
-      "finished_at": "2026-08-08T18:45:14.097473+00:00"
+      "started_at": "2026-08-09T00:37:18.246435+00:00",
+      "finished_at": "2026-08-09T00:37:18.265776+00:00"
     },
     {
       "id": "W5_BundleSizer",
@@ -96,8 +96,65 @@
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:14.079856+00:00",
-      "finished_at": "2026-08-08T18:45:14.098769+00:00"
+      "started_at": "2026-08-09T00:37:18.246791+00:00",
+      "finished_at": "2026-08-09T00:37:18.266188+00:00"
+    },
+    {
+      "id": "W9_UnrealViewport",
+      "name": "UnrealViewport",
+      "group": 2,
+      "role": "Unreal viewport map + 3D scene parity",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w9_unreal_viewport.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.017,
+          "stdout_tail": "PASS: Unreal Engine viewport tuning parity verified\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-09T00:37:18.251832+00:00",
+      "finished_at": "2026-08-09T00:37:18.268941+00:00"
+    },
+    {
+      "id": "W8_SpriteStudio",
+      "name": "SpriteStudio",
+      "group": 2,
+      "role": "2D sprite studio parity (loop, onion skin, sheet layout)",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w8_sprite_studio.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.022,
+          "stdout_tail": "PASS: Aseprite-style 2D sprite studio parity verified\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-09T00:37:18.247130+00:00",
+      "finished_at": "2026-08-09T00:37:18.269422+00:00"
+    },
+    {
+      "id": "W7_LaunchContinuity",
+      "name": "LaunchContinuity",
+      "group": 3,
+      "role": "Store listing + submission guide completeness",
+      "steps": [
+        {
+          "command": "/usr/bin/python3 scripts/workers/w7_launch_continuity.py",
+          "exit_code": 0,
+          "pass": true,
+          "duration_s": 0.017,
+          "stdout_tail": "PASS: launch continuity docs complete\n",
+          "stderr_tail": ""
+        }
+      ],
+      "ok": true,
+      "started_at": "2026-08-09T00:37:18.270297+00:00",
+      "finished_at": "2026-08-09T00:37:18.287309+00:00"
     },
     {
       "id": "W10_AssetRoadmap",
@@ -115,27 +172,8 @@
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:14.100618+00:00",
-      "finished_at": "2026-08-08T18:45:14.117943+00:00"
-    },
-    {
-      "id": "W7_LaunchContinuity",
-      "name": "LaunchContinuity",
-      "group": 3,
-      "role": "Store listing + submission guide completeness",
-      "steps": [
-        {
-          "command": "/usr/bin/python3 scripts/workers/w7_launch_continuity.py",
-          "exit_code": 0,
-          "pass": true,
-          "duration_s": 0.018,
-          "stdout_tail": "PASS: launch continuity docs complete\n",
-          "stderr_tail": ""
-        }
-      ],
-      "ok": true,
-      "started_at": "2026-08-08T18:45:14.100358+00:00",
-      "finished_at": "2026-08-08T18:45:14.118497+00:00"
+      "started_at": "2026-08-09T00:37:18.270580+00:00",
+      "finished_at": "2026-08-09T00:37:18.287555+00:00"
     },
     {
       "id": "W6_ReleaseOps",
@@ -153,8 +191,8 @@
         }
       ],
       "ok": true,
-      "started_at": "2026-08-08T18:45:14.099885+00:00",
-      "finished_at": "2026-08-08T18:45:14.118843+00:00"
+      "started_at": "2026-08-09T00:37:18.270182+00:00",
+      "finished_at": "2026-08-09T00:37:18.289435+00:00"
     }
   ],
   "production_ready": true,

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REQUIRED = [
     ("src/lib/sprite-tuning.ts", ["SPEED_PRESETS", "onionSkin", "sheetLayout", "horizontal"]),
     ("src/components/studio/SpriteTuningPanel.tsx", ["SpriteTuningPanel", "Onion", "Loop"]),
-    ("src/components/studio/SpritePreview2D.tsx", ["onionSkin", "sheetLayout"]),
+    ("src/components/studio/SpritePreview2D.tsx", ["onionSkin", "sheetLayout", "loop"]),
     ("src/lib/sprite-sheet.ts", ["drawSpriteFrameAt"]),
 ]
 
