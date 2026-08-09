@@ -6,13 +6,13 @@
   "ga_ready": true,
   "blockers": [],
   "rc_blockers": [],
-  "audited_at": "2026-08-08T23:50:37.790574Z",
+  "audited_at": "2026-08-09T00:37:18.331807Z",
   "checks": [
     {
       "name": "wave_0_tracking_gate",
       "pass": true,
       "exit_code": 0,
-      "output": "{\n  \"all_pass\": true,\n  \"max_phase\": 8,\n  \"phase_0_pass\": true,\n  \"phase_1_pass\": true,\n  \"phase_2_pass\": true,\n  \"phase_3_pass\": true,\n  \"phase_4_pass\": true,\n  \"phase_5_pass\": true,\n  \"phase_6_pass\": true,\n  \"phase_7_pass\": true,\n  \"phase_8_pass\": true,\n  \"audited_at\": \"2026-08-08T23:50:30.578519+00:00\"\n}\n  [PASS] 0.1_workers\n  [PASS] 0.2_tracking_manifest\n  [PASS] 0.3_frontier_relay\n  [PASS] 1.1_sprite_tuning\n  [PASS] 1.2_tuning_panel\n  [PASS] 1.3_onion_skin\n  [PASS] 2.1_spec_parity\n  [PASS] 2.2_trial_player\n  [PASS] 2.3_unreal_viewport\n  [PASS] 3.1_android\n  [PASS] 3.2_capacitor\n  [PASS] 4.1_benchmark\n  [PASS] 4.2_downloads_save\n  [PASS] 5.1_policy\n  [PASS] 5.2_launch\n  [PASS] 6.1_release_ops\n  [PASS] 6.2_web_build\n  [PASS] 7.1_independent\n  [PASS] 8.1_relay_script\n",
+      "output": "{\n  \"all_pass\": true,\n  \"max_phase\": 8,\n  \"phase_0_pass\": true,\n  \"phase_1_pass\": true,\n  \"phase_2_pass\": true,\n  \"phase_3_pass\": true,\n  \"phase_4_pass\": true,\n  \"phase_5_pass\": true,\n  \"phase_6_pass\": true,\n  \"phase_7_pass\": true,\n  \"phase_8_pass\": true,\n  \"audited_at\": \"2026-08-09T00:37:11.112575+00:00\"\n}\n  [PASS] 0.1_workers\n  [PASS] 0.2_tracking_manifest\n  [PASS] 0.3_frontier_relay\n  [PASS] 1.1_sprite_tuning\n  [PASS] 1.2_tuning_panel\n  [PASS] 1.3_onion_skin\n  [PASS] 2.1_spec_parity\n  [PASS] 2.2_trial_player\n  [PASS] 2.3_unreal_viewport\n  [PASS] 3.1_android\n  [PASS] 3.2_capacitor\n  [PASS] 4.1_benchmark\n  [PASS] 4.2_downloads_save\n  [PASS] 5.1_policy\n  [PASS] 5.2_launch\n  [PASS] 6.1_release_ops\n  [PASS] 6.2_web_build\n  [PASS] 7.1_independent\n  [PASS] 8.1_relay_script\n",
       "command": "/usr/bin/python3 scripts/tracking.py gate"
     },
     {
